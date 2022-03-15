@@ -50,6 +50,10 @@ public:
 	void set_nombre_archivo(std::string nombre);
 
 	std::string to_string();
+
+	// Miembros estáticos
+public:
+	static matriz_t matriz_vacia(int alto, int ancho);
 };
 
 #endif //_IMAGEN_H_

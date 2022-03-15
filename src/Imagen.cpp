@@ -188,3 +188,18 @@ std::string Imagen::to_string()
 		   ", ancho: " + std::to_string(ancho) +
 		   ", alto: " + std::to_string(alto);
 }
+
+Imagen::matriz_t Imagen::matriz_vacia(int ancho, int alto)
+{
+	Imagen::matriz_t vacia;
+	for (int i = 0; i < alto; i++)
+	{
+		vacia.push_back(Imagen::fila_t());
+		for (int j = 0; j < ancho; j++)
+		{
+			vacia[i].push_back(0);
+		}
+	}
+
+	return vacia;
+}
