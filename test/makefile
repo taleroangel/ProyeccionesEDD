@@ -3,9 +3,9 @@ CC	= @g++
 STD	= c++11
 
 # Directories
-OUT	= ./build
-SRC	= ./src
-TST = ./test
+OUT	= ../build
+SRC	= ../src
+TST = ./
 
 # Compiler options
 WARNL = -Wall
@@ -14,7 +14,7 @@ OPT = -O0
 # Flags
 FLAGS = -std=$(STD) $(WARNL) $(OPT) -g
 
-all: $(OUT)/main
+all: $(TST)/bulk/main
 
 # Targets
 TARGETS = $(OUT)/Consola.o $(OUT)/Imagen.o $(OUT)/Volumen.o $(OUT)/Proyeccion.o $(OUT)/Controlador.o
@@ -35,10 +35,14 @@ $(OUT)/Proyeccion.o: $(SRC)/Proyeccion.cpp $(SRC)/Proyeccion.h
 $(OUT)/Volumen.o: $(SRC)/Volumen.cpp $(SRC)/Volumen.h
 	$(CC) -c $(FLAGS) $< -o $@
 
-$(OUT)/main: $(SRC)/main.cpp $(TARGETS)
+$(TST)/bulk/main: $(SRC)/main.cpp $(TARGETS)
 	$(CC) $(FLAGS) $^ -o $@
 
 # Eliminación
 .PHONY: clean
 clean:
 	rm -f ./$(OUT)/*
+
+.PHONY: test
+test: $(TST)/test.cpp $(TARGETS)
+	$(CC) $(FLAGS) $^ -o $(TST)/$@

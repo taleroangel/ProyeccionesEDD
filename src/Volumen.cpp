@@ -10,6 +10,8 @@ Volumen::Volumen(std::string nombre_base, int tam)
 	if (tam > MAX_IMAGENES_VOLUMEN || tam < MIN_IMAGENES_VOLUMEN)
 		throw std::exception();
 
+	int last_ancho = 0, last_alto = 0;
+
 	// Por cada imágen que hay que cargar
 	for (int i = 1; i <= tam; i++)
 	{
@@ -18,6 +20,17 @@ Volumen::Volumen(std::string nombre_base, int tam)
 		std::string numero_base = temp.str();
 
 		this->volumen.push(Imagen(nombre_base + numero_base + EXTENSION_PGM));
+
+		if (i == 1)
+		{
+			last_alto = this->volumen.front().obtener_alto();
+			last_ancho = this->volumen.front().obtener_ancho();
+		}
+		else // Si alguna imagen no tiene ancho y alto igual al anterior ancho y alto
+		{
+			if ((last_ancho != this->volumen.front().obtener_ancho()) || (last_alto != this->volumen.front().obtener_alto()))
+				throw std::exception();
+		}
 	}
 
 	// Ancho y alto son iguales al ancho y alto de las imágenes

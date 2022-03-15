@@ -50,18 +50,18 @@ Imagen::Imagen(std::string nombre_archivo) : nombre_archivo(nombre_archivo)
 		throw std::exception();
 	}
 
-	int current_x = 0;
-	int current_y = 0;
+	// Arreglo donde se van a guardar los valores
+	std::vector<Imagen::elemento_t> pixeles;
 
-	bool creado = false;
-
+	// Leer línea por línea
 	std::string linea;
+	// i lleva la cuenta de las líneas leídas
 	for (int i = 0; std::getline(archivo, linea); i++)
 	{
 		// Ignorar comentarios
 		if (linea[0] == '#')
 		{
-			i--;
+			i--; // No contar esta línea como lineas_leidas
 			continue;
 		}
 
@@ -90,37 +90,32 @@ Imagen::Imagen(std::string nombre_archivo) : nombre_archivo(nombre_archivo)
 		}
 		else // Pixéles
 		{
-			if (creado == false)
+			std::stringstream linea_pixeles(linea);
+			std::string aux;
+
+			// Empujar todos los tokens a la lista
+			while (std::getline(linea_pixeles, aux, ' '))
+				pixeles.push_back(std::stoi(aux));
+		}
+	}
+
+	// Convertir todos los pixeles en arreglo
+	try
+	{
+		for (int i = 0; i < this->alto; i++)
+		{
+			// Crear cada fila
+			this->matriz_pixeles.push_back(Imagen::fila_t());
+			for (int j = 0; j < this->ancho; j++)
 			{
-				// crear filas de tamaño ANCHO
-				for (int i = 0; i < this->alto; i++)
-				{
-					this->matriz_pixeles.push_back(fila_t());
-					for (int j = 0; j < this->ancho; j++)
-					{
-						this->matriz_pixeles[i].push_back(0);
-					}
-				}
-
-				creado = true;
-			}
-
-			// Tokenizar
-			std::stringstream linea2(linea);
-			std::string temp;
-
-			while (std::getline(linea2, temp, ' '))
-			{
-				this->matriz_pixeles[current_y][current_x] = std::stoi(temp);
-				current_x++;
-
-				if (current_x == this->ancho)
-				{
-					current_x = 0;
-					current_y++;
-				}
+				this->matriz_pixeles[i].push_back(pixeles[i * this->ancho + j]);
 			}
 		}
+	}
+	catch (std::exception)
+	{
+		// Si hay algún acceso a memoria ilegal
+		throw std::exception();
 	}
 
 	// Cerrar el archivo
