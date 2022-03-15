@@ -17,7 +17,7 @@ FLAGS = -std=$(STD) $(WARNL) $(OPT) -g
 all: $(TST)/bulk/main
 
 # Targets
-TARGETS = $(OUT)/Consola.o $(OUT)/Imagen.o $(OUT)/Volumen.o $(OUT)/Proyeccion.o $(OUT)/Controlador.o
+TARGETS = $(OUT)/Consola.o $(OUT)/Imagen.o $(OUT)/Volumen.o $(OUT)/Controlador.o
 
 # Compilacion
 $(OUT)/Consola.o: $(SRC)/Consola.cpp $(SRC)/Consola.h
@@ -27,9 +27,6 @@ $(OUT)/Controlador.o: $(SRC)/Controlador.cpp $(SRC)/Controlador.h
 	$(CC) -c $(FLAGS) $< -o $@
 
 $(OUT)/Imagen.o: $(SRC)/Imagen.cpp $(SRC)/Imagen.h
-	$(CC) -c $(FLAGS) $< -o $@
-
-$(OUT)/Proyeccion.o: $(SRC)/Proyeccion.cpp $(SRC)/Proyeccion.h
 	$(CC) -c $(FLAGS) $< -o $@
 
 $(OUT)/Volumen.o: $(SRC)/Volumen.cpp $(SRC)/Volumen.h

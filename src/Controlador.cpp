@@ -1,5 +1,4 @@
 #include "Controlador.h"
-#include "Proyeccion.h"
 
 #include <cstring>
 #include <iostream>
@@ -145,15 +144,11 @@ void Controlador::proyeccion_2d(Command::arguments_t args)
 		if (volumen_cargado == nullptr)
 			throw std::exception();
 
-		// Proyector
-
-		Proyeccion proyeccion{
+		// Crear la proyeccion
+		volumen_cargado->crear_proyeccion(
 			args[1],
 			args[0][0],
-			args[2]};
-
-		// Crear proyección
-		proyeccion.crearProyeccion(*volumen_cargado);
+			args[2]);
 	}
 	catch (std::exception &e)
 	{

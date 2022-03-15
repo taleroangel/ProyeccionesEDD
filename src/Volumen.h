@@ -38,6 +38,12 @@ public:
 
 	std::queue<Imagen> get_volumen() const;
 	void set_volumen(std::queue<Imagen> volumen_);
+
+	// Crear proyeccion del volumen
+	void crear_proyeccion(
+		std::string criterio,
+		char direccion,
+		std::string nombre_archivo);
 };
 
 #endif //_VOLUMEN_H_
