@@ -1,5 +1,5 @@
-#ifndef _IMAGEN_HXX_
-#define _IMAGEN_HXX_
+#ifndef _IMAGEN_H_
+#define _IMAGEN_H_
 
 #include <string>
 #include <vector>
@@ -52,4 +52,4 @@ public:
 	std::string to_string();
 };
 
-#endif //_IMAGEN_HXX_
+#endif //_IMAGEN_H_

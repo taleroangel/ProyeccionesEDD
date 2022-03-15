@@ -1,9 +1,9 @@
-#ifndef __CONTROLADOR_HXX__
-#define __CONTROLADOR_HXX__
+#ifndef __CONTROLADOR_H__
+#define __CONTROLADOR_H__
 
-#include "Console.hxx"
-#include "Imagen.hxx"
-#include "Volumen.hxx"
+#include "Console.h"
+#include "Imagen.h"
+#include "Volumen.h"
 
 #include <vector>
 #include <memory>
@@ -40,4 +40,4 @@ public:
 	static void segmentar(Command::arguments_t args);
 };
 
-#endif // __CONTROLADOR_HXX__
+#endif // __CONTROLADOR_H__

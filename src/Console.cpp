@@ -1,4 +1,4 @@
-#include "Console.hxx"
+#include "Console.h"
 
 #include <iostream>
 #include <sstream>

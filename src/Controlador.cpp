@@ -1,5 +1,5 @@
-#include "Controlador.hxx"
-#include "Proyeccion.hxx"
+#include "Controlador.h"
+#include "Proyeccion.h"
 
 #include <cstring>
 #include <iostream>

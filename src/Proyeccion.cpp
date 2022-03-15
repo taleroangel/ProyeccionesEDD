@@ -1,5 +1,5 @@
-#include "Proyeccion.hxx"
-#include "Imagen.hxx"
+#include "Proyeccion.h"
+#include "Imagen.h"
 
 #include <iostream>
 

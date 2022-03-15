@@ -1,8 +1,8 @@
-#ifndef _PROYECCION_HXX_
-#define _PROYECCION_HXX_
+#ifndef _PROYECCION_H_
+#define _PROYECCION_H_
 
-#include "Imagen.hxx"
-#include "Volumen.hxx"
+#include "Imagen.h"
+#include "Volumen.h"
 
 #include <string>
 
@@ -30,4 +30,4 @@ public:
 	void fijar_nombre_archivo(std::string nombre_archivo);
 };
 
-#endif //_PROYECCION_HXX_
+#endif //_PROYECCION_H_

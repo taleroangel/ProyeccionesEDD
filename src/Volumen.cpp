@@ -1,4 +1,4 @@
-#include "Volumen.hxx"
+#include "Volumen.h"
 
 #include <sstream>
 #include <iomanip>

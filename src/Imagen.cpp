@@ -1,4 +1,4 @@
-#include "Imagen.hxx"
+#include "Imagen.h"
 
 #include <fstream>
 #include <sstream>

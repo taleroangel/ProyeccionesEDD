@@ -1,7 +1,7 @@
-#ifndef _VOLUMEN_HXX_
-#define _VOLUMEN_HXX_
+#ifndef _VOLUMEN_H_
+#define _VOLUMEN_H_
 
-#include "Imagen.hxx"
+#include "Imagen.h"
 #include <string>
 #include <queue>
 
@@ -40,4 +40,4 @@ public:
 	void fijar_volumen(std::queue<Imagen> volumen_);
 };
 
-#endif //_VOLUMEN_HXX_
+#endif //_VOLUMEN_H_

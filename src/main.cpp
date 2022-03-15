@@ -14,8 +14,8 @@
  * Copyright © 2022
  */
 
-#include "Console.hxx"
-#include "Controlador.hxx"
+#include "Console.h"
+#include "Controlador.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -81,7 +81,7 @@ int main(int argc, char const *argv[])
 	Interpreter interpreter{commands};
 	// Correr el intérprete
 	interpreter.cli();
-
+	// Liberar los recursos utilizados
 	Controlador::limpiar();
 	return EXIT_SUCCESS;
 }
