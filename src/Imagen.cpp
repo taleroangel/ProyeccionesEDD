@@ -154,30 +154,30 @@ bool Imagen::guardarArchivo(std::string nombre_archivo)
 	return true;
 }
 
-std::string Imagen::obtener_formato() const
+std::string Imagen::get_formato() const
 {
 	return formato_imagen;
 }
-void Imagen::fijar_formato(const std::string &formatoImagen) { formato_imagen = formatoImagen; }
+void Imagen::set_formato(const std::string &formatoImagen) { formato_imagen = formatoImagen; }
 
-int Imagen::obtener_ancho() const { return ancho; }
-void Imagen::fijar_ancho(int ancho_) { ancho = ancho_; }
+int Imagen::get_ancho() const { return ancho; }
+void Imagen::set_ancho(int ancho_) { ancho = ancho_; }
 
-int Imagen::obtener_alto() const { return alto; }
-void Imagen::fijar_alto(int alto_) { alto = alto_; }
+int Imagen::get_alto() const { return alto; }
+void Imagen::set_alto(int alto_) { alto = alto_; }
 
-int Imagen::obtener_max_tam() const { return max_tam; }
-void Imagen::fijar_max_tam(int maxTam) { max_tam = maxTam; }
+int Imagen::get_max_tam() const { return max_tam; }
+void Imagen::set_max_tam(int maxTam) { max_tam = maxTam; }
 
-Imagen::matriz_t Imagen::obtener_pixeles() const { return matriz_pixeles; }
-void Imagen::fijar_pixeles(Imagen::matriz_t matrizPixeles) { matriz_pixeles = matrizPixeles; }
+Imagen::matriz_t Imagen::get_pixeles() const { return matriz_pixeles; }
+void Imagen::set_pixeles(Imagen::matriz_t matrizPixeles) { matriz_pixeles = matrizPixeles; }
 
-std::string Imagen::obtener_nombre_archivo() const
+std::string Imagen::get_nombre_archivo() const
 {
 	return this->nombre_archivo;
 }
 
-void Imagen::fijar_nombre_archivo(std::string nombre)
+void Imagen::set_nombre_archivo(std::string nombre)
 {
 	this->nombre_archivo = nombre;
 }

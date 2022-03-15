@@ -9,40 +9,40 @@ Proyeccion::Proyeccion(std::string criterio, char direccion, std::string nombre_
 void Proyeccion::crearProyeccion(Volumen volumen)
 {
 	// Copiar las propiedades de una imagen
-	Imagen copiar = volumen.obtener_volumen().front();
+	Imagen copiar = volumen.get_volumen().front();
 	Imagen proyeccion_imagen{}; // Donde se guarda la proyección
 
-	proyeccion_imagen.fijar_formato(copiar.obtener_formato());
-	proyeccion_imagen.fijar_max_tam(copiar.obtener_max_tam());
-	proyeccion_imagen.fijar_nombre_archivo(this->nombre_archivo);
+	proyeccion_imagen.set_formato(copiar.get_formato());
+	proyeccion_imagen.set_max_tam(copiar.get_max_tam());
+	proyeccion_imagen.set_nombre_archivo(this->nombre_archivo);
 
 	//* De arriba para abajo
 	if (this->direccion == 'x')
 	{
-		proyeccion_imagen.fijar_alto(copiar.obtener_alto());
-		proyeccion_imagen.fijar_ancho(copiar.obtener_ancho());
+		proyeccion_imagen.set_alto(copiar.get_alto());
+		proyeccion_imagen.set_ancho(copiar.get_ancho());
 
 		if (this->criterio == "promedio")
 		{
 			// Crear una matriz
 			Imagen::matriz_t promedio;
-			for (int i = 0; i < copiar.obtener_alto(); i++)
+			for (int i = 0; i < copiar.get_alto(); i++)
 			{
 				promedio.push_back(Imagen::fila_t());
-				for (int j = 0; j < copiar.obtener_ancho(); j++)
+				for (int j = 0; j < copiar.get_ancho(); j++)
 				{
 					promedio[i].push_back(0);
 				}
 			}
 
 			// Obtener todas las imágenes
-			std::queue<Imagen> imagenes = volumen.obtener_volumen();
+			std::queue<Imagen> imagenes = volumen.get_volumen();
 			for (int imagen = 0; imagen < imagenes.size(); imagen++)
 			{
 				// Por cada imagen
 				Imagen actual = imagenes.front();
 				// Obtener sus píxeles
-				Imagen::matriz_t pixeles = actual.obtener_pixeles();
+				Imagen::matriz_t pixeles = actual.get_pixeles();
 
 				// Por cada fila
 				for (int i = 0; i < pixeles.size(); i++)
@@ -62,11 +62,11 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 			{
 				for (int j = 0; j < promedio[i].size(); j++)
 				{
-					promedio[i][j] = promedio[i][j] / copiar.obtener_alto();
+					promedio[i][j] = promedio[i][j] / copiar.get_alto();
 				}
 			}
 
-			proyeccion_imagen.fijar_pixeles(promedio);
+			proyeccion_imagen.set_pixeles(promedio);
 		}
 
 		// Maximo
@@ -74,23 +74,23 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 		{
 			// Crear una matriz
 			Imagen::matriz_t maximo;
-			for (int i = 0; i < copiar.obtener_alto(); i++)
+			for (int i = 0; i < copiar.get_alto(); i++)
 			{
 				maximo.push_back(Imagen::fila_t());
-				for (int j = 0; j < copiar.obtener_ancho(); j++)
+				for (int j = 0; j < copiar.get_ancho(); j++)
 				{
 					maximo[i].push_back(0);
 				}
 			}
 
 			// Obtener todas las imágenes
-			std::queue<Imagen> imagenes = volumen.obtener_volumen();
+			std::queue<Imagen> imagenes = volumen.get_volumen();
 			for (int imagen = 0; imagen < imagenes.size(); imagen++)
 			{
 				// Por cada imagen
 				Imagen actual = imagenes.front();
 				// Obtener sus píxeles
-				Imagen::matriz_t pixeles = actual.obtener_pixeles();
+				Imagen::matriz_t pixeles = actual.get_pixeles();
 
 				// Por cada fila
 				for (int i = 0; i < pixeles.size(); i++)
@@ -108,7 +108,7 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 				imagenes.pop();
 			}
 
-			proyeccion_imagen.fijar_pixeles(maximo);
+			proyeccion_imagen.set_pixeles(maximo);
 		}
 
 		// Mínimo
@@ -116,23 +116,23 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 		{
 			// Crear una matriz
 			Imagen::matriz_t minimo;
-			for (int i = 0; i < copiar.obtener_alto(); i++)
+			for (int i = 0; i < copiar.get_alto(); i++)
 			{
 				minimo.push_back(Imagen::fila_t());
-				for (int j = 0; j < copiar.obtener_ancho(); j++)
+				for (int j = 0; j < copiar.get_ancho(); j++)
 				{
-					minimo[i].push_back(copiar.obtener_max_tam());
+					minimo[i].push_back(copiar.get_max_tam());
 				}
 			}
 
 			// Obtener todas las imágenes
-			std::queue<Imagen> imagenes = volumen.obtener_volumen();
+			std::queue<Imagen> imagenes = volumen.get_volumen();
 			for (int imagen = 0; imagen < imagenes.size(); imagen++)
 			{
 				// Por cada imagen
 				Imagen actual = imagenes.front();
 				// Obtener sus píxeles
-				Imagen::matriz_t pixeles = actual.obtener_pixeles();
+				Imagen::matriz_t pixeles = actual.get_pixeles();
 
 				// Por cada fila
 				for (int i = 0; i < pixeles.size(); i++)
@@ -150,37 +150,37 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 				imagenes.pop();
 			}
 
-			proyeccion_imagen.fijar_pixeles(minimo);
+			proyeccion_imagen.set_pixeles(minimo);
 		}
 	}
 
 	//* Desde el lado, de derecha a izquierda
 	else if (this->direccion == 'y')
 	{
-		proyeccion_imagen.fijar_alto(volumen.obtener_volumen().size());
-		proyeccion_imagen.fijar_ancho(volumen.obtener_alto());
+		proyeccion_imagen.set_alto(volumen.get_volumen().size());
+		proyeccion_imagen.set_ancho(volumen.get_alto());
 
 		if (this->criterio == "promedio")
 		{
 			// Crear una matriz
 			Imagen::matriz_t promedio;
-			for (int i = 0; i < volumen.obtener_volumen().size(); i++)
+			for (int i = 0; i < volumen.get_volumen().size(); i++)
 			{
 				promedio.push_back(Imagen::fila_t());
-				for (int j = 0; j < volumen.obtener_alto(); j++)
+				for (int j = 0; j < volumen.get_alto(); j++)
 				{
 					promedio[i].push_back(0);
 				}
 			}
 
 			// Obtener todas las imágenes
-			std::queue<Imagen> imagenes = volumen.obtener_volumen();
+			std::queue<Imagen> imagenes = volumen.get_volumen();
 			for (int imagen = 0; imagen < imagenes.size(); imagen++)
 			{
 				// Por cada imagen
 				Imagen actual = imagenes.front();
 				// Obtener sus píxeles
-				Imagen::matriz_t pixeles = actual.obtener_pixeles();
+				Imagen::matriz_t pixeles = actual.get_pixeles();
 
 				// Por cada fila
 				for (int i = 0; i < pixeles.size(); i++)
@@ -192,7 +192,7 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 						acumulador += pixeles[i][j];
 					}
 
-					acumulador = acumulador / volumen.obtener_ancho();
+					acumulador = acumulador / volumen.get_ancho();
 
 					promedio[imagen][i] = acumulador;
 				}
@@ -200,7 +200,7 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 				imagenes.pop();
 			}
 
-			proyeccion_imagen.fijar_pixeles(promedio);
+			proyeccion_imagen.set_pixeles(promedio);
 		}
 
 		// Maximo
@@ -208,23 +208,23 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 		{
 			// Crear una matriz
 			Imagen::matriz_t maximo;
-			for (int i = 0; i < volumen.obtener_volumen().size(); i++)
+			for (int i = 0; i < volumen.get_volumen().size(); i++)
 			{
 				maximo.push_back(Imagen::fila_t());
-				for (int j = 0; j < volumen.obtener_alto(); j++)
+				for (int j = 0; j < volumen.get_alto(); j++)
 				{
 					maximo[i].push_back(0);
 				}
 			}
 
 			// Obtener todas las imágenes
-			std::queue<Imagen> imagenes = volumen.obtener_volumen();
+			std::queue<Imagen> imagenes = volumen.get_volumen();
 			for (int imagen = 0; imagen < imagenes.size(); imagen++)
 			{
 				// Por cada imagen
 				Imagen actual = imagenes.front();
 				// Obtener sus píxeles
-				Imagen::matriz_t pixeles = actual.obtener_pixeles();
+				Imagen::matriz_t pixeles = actual.get_pixeles();
 
 				// Por cada fila
 				for (int i = 0; i < pixeles.size(); i++)
@@ -245,7 +245,7 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 				imagenes.pop();
 			}
 
-			proyeccion_imagen.fijar_pixeles(maximo);
+			proyeccion_imagen.set_pixeles(maximo);
 		}
 
 		// Mínimo
@@ -253,28 +253,28 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 		{
 			// Crear una matriz
 			Imagen::matriz_t maximo;
-			for (int i = 0; i < volumen.obtener_volumen().size(); i++)
+			for (int i = 0; i < volumen.get_volumen().size(); i++)
 			{
 				maximo.push_back(Imagen::fila_t());
-				for (int j = 0; j < volumen.obtener_alto(); j++)
+				for (int j = 0; j < volumen.get_alto(); j++)
 				{
 					maximo[i].push_back(0);
 				}
 			}
 
 			// Obtener todas las imágenes
-			std::queue<Imagen> imagenes = volumen.obtener_volumen();
+			std::queue<Imagen> imagenes = volumen.get_volumen();
 			for (int imagen = 0; imagen < imagenes.size(); imagen++)
 			{
 				// Por cada imagen
 				Imagen actual = imagenes.front();
 				// Obtener sus píxeles
-				Imagen::matriz_t pixeles = actual.obtener_pixeles();
+				Imagen::matriz_t pixeles = actual.get_pixeles();
 
 				// Por cada fila
 				for (int i = 0; i < pixeles.size(); i++)
 				{
-					Imagen::elemento_t min_val = copiar.obtener_max_tam();
+					Imagen::elemento_t min_val = copiar.get_max_tam();
 					// Por cada elemento
 					for (int j = 0; j < pixeles[i].size(); j++)
 					{
@@ -290,39 +290,39 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 				imagenes.pop();
 			}
 
-			proyeccion_imagen.fijar_pixeles(maximo);
+			proyeccion_imagen.set_pixeles(maximo);
 		}
 	}
 
 	else if (this->direccion == 'z')
 	{
-		proyeccion_imagen.fijar_alto(volumen.obtener_volumen().size());
-		proyeccion_imagen.fijar_ancho(volumen.obtener_ancho());
+		proyeccion_imagen.set_alto(volumen.get_volumen().size());
+		proyeccion_imagen.set_ancho(volumen.get_ancho());
 
 		if (this->criterio == "promedio")
 		{
 			// Crear una matriz
 			Imagen::matriz_t promedio;
-			for (int i = 0; i < volumen.obtener_volumen().size(); i++)
+			for (int i = 0; i < volumen.get_volumen().size(); i++)
 			{
 				promedio.push_back(Imagen::fila_t());
-				for (int j = 0; j < volumen.obtener_ancho(); j++)
+				for (int j = 0; j < volumen.get_ancho(); j++)
 				{
 					promedio[i].push_back(0);
 				}
 			}
 
 			// Obtener todas las imágenes
-			std::queue<Imagen> imagenes = volumen.obtener_volumen();
+			std::queue<Imagen> imagenes = volumen.get_volumen();
 			for (int imagen = 0; imagen < imagenes.size(); imagen++)
 			{
 				// Por cada imagen
 				Imagen actual = imagenes.front();
 				// Obtener sus píxeles
-				Imagen::matriz_t pixeles = actual.obtener_pixeles();
+				Imagen::matriz_t pixeles = actual.get_pixeles();
 
 				// Por cada columna
-				for (int j = 0; j < actual.obtener_ancho(); j++)
+				for (int j = 0; j < actual.get_ancho(); j++)
 				{
 					Imagen::elemento_t acumulador = 0;
 
@@ -332,7 +332,7 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 						acumulador += pixeles[i][j];
 					}
 
-					acumulador = acumulador / volumen.obtener_ancho();
+					acumulador = acumulador / volumen.get_ancho();
 
 					promedio[imagen][j] = acumulador;
 				}
@@ -340,33 +340,33 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 				imagenes.pop();
 			}
 
-			proyeccion_imagen.fijar_pixeles(promedio);
+			proyeccion_imagen.set_pixeles(promedio);
 		}
 
 		else if (this->criterio == "maximo")
 		{
 			// Crear una matriz
 			Imagen::matriz_t maximo;
-			for (int i = 0; i < volumen.obtener_volumen().size(); i++)
+			for (int i = 0; i < volumen.get_volumen().size(); i++)
 			{
 				maximo.push_back(Imagen::fila_t());
-				for (int j = 0; j < volumen.obtener_ancho(); j++)
+				for (int j = 0; j < volumen.get_ancho(); j++)
 				{
 					maximo[i].push_back(0);
 				}
 			}
 
 			// Obtener todas las imágenes
-			std::queue<Imagen> imagenes = volumen.obtener_volumen();
+			std::queue<Imagen> imagenes = volumen.get_volumen();
 			for (int imagen = 0; imagen < imagenes.size(); imagen++)
 			{
 				// Por cada imagen
 				Imagen actual = imagenes.front();
 				// Obtener sus píxeles
-				Imagen::matriz_t pixeles = actual.obtener_pixeles();
+				Imagen::matriz_t pixeles = actual.get_pixeles();
 
 				// Por cada fila
-				for (int j = 0; j < actual.obtener_ancho(); j++)
+				for (int j = 0; j < actual.get_ancho(); j++)
 				{
 					Imagen::elemento_t max_val = 0;
 					// Por cada elemento
@@ -384,35 +384,35 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 				imagenes.pop();
 			}
 
-			proyeccion_imagen.fijar_pixeles(maximo);
+			proyeccion_imagen.set_pixeles(maximo);
 		}
 
 		else if (this->criterio == "minimo")
 		{
 			// Crear una matriz
 			Imagen::matriz_t minimo;
-			for (int i = 0; i < volumen.obtener_volumen().size(); i++)
+			for (int i = 0; i < volumen.get_volumen().size(); i++)
 			{
 				minimo.push_back(Imagen::fila_t());
-				for (int j = 0; j < volumen.obtener_ancho(); j++)
+				for (int j = 0; j < volumen.get_ancho(); j++)
 				{
-					minimo[i].push_back(copiar.obtener_max_tam());
+					minimo[i].push_back(copiar.get_max_tam());
 				}
 			}
 
 			// Obtener todas las imágenes
-			std::queue<Imagen> imagenes = volumen.obtener_volumen();
+			std::queue<Imagen> imagenes = volumen.get_volumen();
 			for (int imagen = 0; imagen < imagenes.size(); imagen++)
 			{
 				// Por cada imagen
 				Imagen actual = imagenes.front();
 				// Obtener sus píxeles
-				Imagen::matriz_t pixeles = actual.obtener_pixeles();
+				Imagen::matriz_t pixeles = actual.get_pixeles();
 
 				// Por cada fila
-				for (int j = 0; j < actual.obtener_ancho(); j++)
+				for (int j = 0; j < actual.get_ancho(); j++)
 				{
-					Imagen::elemento_t min_val = copiar.obtener_max_tam();
+					Imagen::elemento_t min_val = copiar.get_max_tam();
 					// Por cada elemento
 					for (int i = 0; i < pixeles.size(); i++)
 					{
@@ -428,7 +428,7 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 				imagenes.pop();
 			}
 
-			proyeccion_imagen.fijar_pixeles(minimo);
+			proyeccion_imagen.set_pixeles(minimo);
 		}
 	}
 
@@ -436,30 +436,30 @@ void Proyeccion::crearProyeccion(Volumen volumen)
 	proyeccion_imagen.guardarArchivo(this->nombre_archivo);
 }
 
-std::string Proyeccion::obtener_criterio() const
+std::string Proyeccion::get_criterio() const
 {
 	return criterio;
 }
 
-void Proyeccion::fijar_criterio(std::string criterio)
+void Proyeccion::set_criterio(std::string criterio)
 {
 	this->criterio = criterio;
 }
 
-char Proyeccion::obtener_direccion() const
+char Proyeccion::get_direccion() const
 {
 	return direccion;
 }
-void Proyeccion::fijar_direccion(char direccion)
+void Proyeccion::set_direccion(char direccion)
 {
 	this->direccion = direccion;
 }
 
-std::string Proyeccion::obtener_nombre_archivo() const
+std::string Proyeccion::get_nombre_archivo() const
 {
 	return nombre_archivo;
 }
-void Proyeccion::fijar_nombre_archivo(std::string nombre_archivo)
+void Proyeccion::set_nombre_archivo(std::string nombre_archivo)
 {
 	this->nombre_archivo = nombre_archivo;
 }

@@ -24,20 +24,20 @@ public:
 
 	std::string to_string() const;
 
-	std::string obtener_nombre_base() const;
-	void fijar_nombre_base(std::string nombreBase);
+	std::string get_nombre_base() const;
+	void set_nombre_base(std::string nombreBase);
 
-	int obtener_tam_volumen() const;
-	void fijar_tam_volumen(int tamVolumen);
+	int get_tam_volumen() const;
+	void set_tam_volumen(int tamVolumen);
 
-	int obtener_ancho() const;
-	void fijar_ancho(int ancho);
+	int get_ancho() const;
+	void set_ancho(int ancho);
 
-	int obtener_alto() const;
-	void fijar_alto(int alto);
+	int get_alto() const;
+	void set_alto(int alto);
 
-	std::queue<Imagen> obtener_volumen() const;
-	void fijar_volumen(std::queue<Imagen> volumen_);
+	std::queue<Imagen> get_volumen() const;
+	void set_volumen(std::queue<Imagen> volumen_);
 };
 
 #endif //_VOLUMEN_H_

@@ -23,19 +23,19 @@ Volumen::Volumen(std::string nombre_base, int tam)
 
 		if (i == 1)
 		{
-			last_alto = this->volumen.front().obtener_alto();
-			last_ancho = this->volumen.front().obtener_ancho();
+			last_alto = this->volumen.front().get_alto();
+			last_ancho = this->volumen.front().get_ancho();
 		}
 		else // Si alguna imagen no tiene ancho y alto igual al anterior ancho y alto
 		{
-			if ((last_ancho != this->volumen.front().obtener_ancho()) || (last_alto != this->volumen.front().obtener_alto()))
+			if ((last_ancho != this->volumen.front().get_ancho()) || (last_alto != this->volumen.front().get_alto()))
 				throw std::exception();
 		}
 	}
 
 	// Ancho y alto son iguales al ancho y alto de las imágenes
-	this->ancho = this->volumen.front().obtener_ancho();
-	this->alto = this->volumen.front().obtener_alto();
+	this->ancho = this->volumen.front().get_ancho();
+	this->alto = this->volumen.front().get_alto();
 }
 
 std::string Volumen::to_string() const
@@ -46,30 +46,30 @@ std::string Volumen::to_string() const
 		   ",  alto: " + std::to_string(alto);
 }
 
-int Volumen::obtener_ancho() const
+int Volumen::get_ancho() const
 {
 	return ancho;
 }
-void Volumen::fijar_ancho(int ancho)
+void Volumen::set_ancho(int ancho)
 {
 	this->ancho = ancho;
 }
 
-int Volumen::obtener_alto() const
+int Volumen::get_alto() const
 {
 	return alto;
 }
 
-void Volumen::fijar_alto(int alto)
+void Volumen::set_alto(int alto)
 {
 	this->alto = alto;
 }
 
-std::string Volumen::obtener_nombre_base() const { return nombre_base; }
-void Volumen::fijar_nombre_base(std::string nombreBase) { nombre_base = nombreBase; }
+std::string Volumen::get_nombre_base() const { return nombre_base; }
+void Volumen::set_nombre_base(std::string nombreBase) { nombre_base = nombreBase; }
 
-int Volumen::obtener_tam_volumen() const { return tam_volumen; }
-void Volumen::fijar_tam_volumen(int tamVolumen) { tam_volumen = tamVolumen; }
+int Volumen::get_tam_volumen() const { return tam_volumen; }
+void Volumen::set_tam_volumen(int tamVolumen) { tam_volumen = tamVolumen; }
 
-std::queue<Imagen> Volumen::obtener_volumen() const { return volumen; }
-void Volumen::fijar_volumen(std::queue<Imagen> volumen_) { volumen = volumen_; }
+std::queue<Imagen> Volumen::get_volumen() const { return volumen; }
+void Volumen::set_volumen(std::queue<Imagen> volumen_) { volumen = volumen_; }

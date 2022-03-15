@@ -20,14 +20,14 @@ public:
 	//* Crear la proyección 2D
 	void crearProyeccion(Volumen volumen);
 
-	std::string obtener_criterio() const;
-	void fijar_criterio(std::string criterio);
+	std::string get_criterio() const;
+	void set_criterio(std::string criterio);
 
-	char obtener_direccion() const;
-	void fijar_direccion(char direccion);
+	char get_direccion() const;
+	void set_direccion(char direccion);
 
-	std::string obtener_nombre_archivo() const;
-	void fijar_nombre_archivo(std::string nombre_archivo);
+	std::string get_nombre_archivo() const;
+	void set_nombre_archivo(std::string nombre_archivo);
 };
 
 #endif //_PROYECCION_H_

@@ -31,23 +31,23 @@ public:
 	bool guardarArchivo(std::string nombre_archivo);
 
 	// Getters y setters
-	std::string obtener_formato() const;
-	void fijar_formato(const std::string &formatoImagen);
+	std::string get_formato() const;
+	void set_formato(const std::string &formatoImagen);
 
-	int obtener_ancho() const;
-	void fijar_ancho(int ancho_);
+	int get_ancho() const;
+	void set_ancho(int ancho_);
 
-	int obtener_alto() const;
-	void fijar_alto(int alto_);
+	int get_alto() const;
+	void set_alto(int alto_);
 
-	int obtener_max_tam() const;
-	void fijar_max_tam(int maxTam);
+	int get_max_tam() const;
+	void set_max_tam(int maxTam);
 
-	matriz_t obtener_pixeles() const;
-	void fijar_pixeles(matriz_t matrizPixeles);
+	matriz_t get_pixeles() const;
+	void set_pixeles(matriz_t matrizPixeles);
 
-	std::string obtener_nombre_archivo() const;
-	void fijar_nombre_archivo(std::string nombre);
+	std::string get_nombre_archivo() const;
+	void set_nombre_archivo(std::string nombre);
 
 	std::string to_string();
 };
