@@ -14,7 +14,7 @@
  * Copyright © 2022
  */
 
-#include "Console.h"
+#include "Consola.h"
 #include "Controlador.h"
 
 #include <iostream>

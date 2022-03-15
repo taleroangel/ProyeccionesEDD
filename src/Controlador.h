@@ -1,7 +1,7 @@
 #ifndef __CONTROLADOR_H__
 #define __CONTROLADOR_H__
 
-#include "Console.h"
+#include "Consola.h"
 #include "Imagen.h"
 #include "Volumen.h"
 

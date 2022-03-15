@@ -1,5 +1,5 @@
 /**
- * @file Console.h
+ * @file Consola.h
  * @authors Angel Talero, Juan Urquijo, Iván Martínez
  * @brief Clase encargada de manejar la línea de comandos
  * @version 0.1
