@@ -4,8 +4,7 @@
 #include <sstream>
 #include <stdexcept>
 
-Imagen::Imagen(matriz_t matriz_pixeles, std::string formato)
-    : formato_imagen(formato), matriz_pixeles(matriz_pixeles)
+Imagen::Imagen(matriz_t matriz_pixeles) : matriz_pixeles{matriz_pixeles}
 {
     int valor_maximo = 0;
 
@@ -228,7 +227,7 @@ Imagen::matriz_t Imagen::matriz_vacia(int ancho, int alto)
     Imagen::matriz_t vacia;
     for (int i = 0; i < alto; i++)
     {
-        vacia.push_back(Imagen::fila_t());
+        vacia.push_back(std::vector<elemento_t>());
         for (int j = 0; j < ancho; j++)
         {
             vacia[i].push_back(0);

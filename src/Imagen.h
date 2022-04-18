@@ -24,8 +24,13 @@ class Imagen
 
   public:
     Imagen() = default;
-    Imagen(matriz_t matriz_pixeles, std::string formato = "P2");
+    Imagen(matriz_t matriz_pixeles);
     Imagen(std::string nombre_archivo);
+
+    // Rule of three
+    ~Imagen() = default;                         // Destructor
+    Imagen(const Imagen &) = default;            // Copy constructor
+    Imagen &operator=(const Imagen &) = default; // Copy assigment operator
 
     /**
      * @brief Guardar la imágen actual en un archivo .pgm
@@ -59,7 +64,7 @@ class Imagen
 
     // Miembros estáticos
   public:
-    static matriz_t matriz_vacia(int alto, int ancho);
+    static matriz_t matriz_vacia(int ancho, int alto);
 };
 
 #endif //_IMAGEN_H_

@@ -23,19 +23,6 @@ class Volumen
     int alto;                /**< Alto del volumen */
     std::queue<Imagen> volumen /**< Capas del volumen*/;
 
-  private:
-    /**
-     * @brief Invierte la orientación del volumen, genera un bloque de imágenes
-     * ordenadas en la dirección de las X's
-     *
-     * @param direccion Dirección hacia la cual rotar el bloque de imágenes
-     * @param ancho Variable donde se va a guardar el nuevo ancho
-     * @param alto Variable donde se va a guardar el nuevo alto
-     * @return std::queue<Imagen> Retorna el nuevo bloque de imágenes
-     */
-    std::queue<Imagen> rotar_bloque(const char direccion, int &ancho,
-                                    int &alto);
-
   public:
     /**
      * @brief Construir un volúmen vacío

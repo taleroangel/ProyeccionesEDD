@@ -1,58 +1,12 @@
 #include "Volumen.h"
+#include "Imagen.h"
 
 #include <cassert>
 #include <iomanip>
+#include <iostream>
 #include <queue>
 #include <sstream>
 #include <stdexcept>
-
-std::queue<Imagen> Volumen::rotar_bloque(const char direccion, int &ancho,
-                                         int &alto)
-{
-    // Bloque a retornar
-    std::queue<Imagen> bloque;
-
-    // Calcular el bloque
-    switch (direccion)
-    {
-    case 'x': // Retorna el bloque tal cual
-        ancho = this->ancho;
-        alto = this->alto;
-        return std::queue<Imagen>(this->volumen);
-
-    case 'y':
-        alto = this->tam_volumen;
-        ancho = this->alto;
-
-        // Obtener una imágen por cada capa
-        for (int k = 0; k < this->ancho; k++)
-        {
-            // Crear una copia del bloque
-            std::queue<Imagen> copia(this->volumen);
-
-            Imagen::matriz_t newm = Imagen::matriz_vacia(alto, ancho);
-
-            for (int c = 0; !copia.empty(); c++)
-            {
-                Imagen old = copia.front();
-                // Copiar la capa al vector de bloques
-                for (int i = 0; i < old.get_alto(); i++)
-                    newm[c][i] = old.get_pixeles()[i][k];
-
-                copia.pop();
-            }
-
-            // Guardar la imágen
-            bloque.push(Imagen{newm});
-        }
-
-        // Retornar el blque
-        return bloque;
-
-    default: // La dirección no es válida
-        throw std::invalid_argument("No es una dirección válida");
-    }
-}
 
 Volumen::Volumen(std::string nombre_base, int tam)
     : nombre_base(nombre_base), tam_volumen(tam)
@@ -151,32 +105,85 @@ void Volumen::set_volumen(std::queue<Imagen> volumen_)
     volumen = volumen_;
 }
 
-// TODO crear la proyección
 void Volumen::crear_proyeccion(std::string criterio, char direccion,
                                std::string nombre_archivo)
 {
-    int ancho, alto;
-    std::queue<Imagen> bloque = this->rotar_bloque(direccion, ancho, alto);
-    int tam = bloque.size();
-    Imagen::matriz_t resultado = Imagen::matriz_vacia(alto, ancho);
+    int alto, ancho;
+    std::queue<Imagen> imagenes{};
 
-    // PROMEDIO
-    while (!bloque.empty())
+    // Buscar según dirección
+    std::cerr << "Creando bloque\n";
+    switch (direccion)
     {
-        Imagen imagen = bloque.front();
+    case 'x':
+        alto = this->alto;
+        ancho = this->ancho;
+        imagenes = this->get_volumen();
+        break;
 
-        // Sumar al resultado
-        for (int i = 0; i < alto; i++)
-            for (int j = 0; j < ancho; j++)
-                resultado[i][j] += imagen.get_pixeles()[i][j];
+    case 'y':
+        alto = this->tam_volumen;
+        ancho = this->alto;
 
-        bloque.pop();
+        // Por cada trozo vertical del volumen
+        for (int k = 0; k < this->ancho; k++)
+        {
+            Imagen::matriz_t mtx = Imagen::matriz_vacia(ancho, alto);
+            std::queue<Imagen> copia(this->get_volumen());
+            // Por cada capa horizontal del volumen
+            for (int c = 0; !copia.empty(); c++)
+            {
+                Imagen::matriz_t capa = copia.front().get_pixeles();
+                // Por cada pixel en la capa
+                for (int i = 0; i < this->alto; i++)
+                {
+                    mtx[c][i] = capa[i][k];
+                }
+                copia.pop();
+            }
+
+            // Meter la nueva capa
+            imagenes.push(Imagen{mtx});
+        }
+        break;
+
+    case 'z':
+    default:
+        throw std::invalid_argument("Dirección errónea");
     }
 
-    for (int i = 0; i < alto; i++)
-        for (int j = 0; j < ancho; j++)
-            resultado[i][j] /= tam;
+    std::cerr << "Calculando bloque\n";
 
-    Imagen img{resultado};
-    img.guardar_archivo(nombre_archivo);
+    // Almacenar el resultado
+    Imagen::matriz_t resultado = Imagen::matriz_vacia(ancho, alto);
+
+    // Promedio
+    if (criterio.compare("promedio") == 0)
+    {
+        // Buscar en cada imágen
+        while (!imagenes.empty())
+        {
+            Imagen::matriz_t pixeles = imagenes.front().get_pixeles();
+
+            // Sumar cada imagen al total
+            for (int i = 0; i < alto; i++)
+                for (int j = 0; j < ancho; j++)
+                    resultado[i][j] += pixeles[i][j];
+
+            imagenes.pop();
+        }
+
+        // Sacar el promedio total
+        for (int i = 0; i < alto; i++)
+            for (int j = 0; j < ancho; j++)
+                resultado[i][j] /= this->tam_volumen;
+    }
+    // TODO crear los criterios
+    else
+    {
+        throw std::invalid_argument("Dirección errónea");
+    }
+
+    // Grabar el resultado
+    Imagen{resultado}.guardar_archivo(nombre_archivo);
 }

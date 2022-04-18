@@ -1,6 +1,6 @@
 # Compiler and Standard
-CC	= @g++
-STD	= c++14
+CC	= @clang++
+STD	= c++11
 
 # Directories
 OUT	= ./build
@@ -14,7 +14,10 @@ OPT = -O0
 # Flags
 FLAGS = -std=$(STD) $(WARNL) $(OPT) -g
 
-all: $(OUT)/main
+all: pre $(OUT)/main
+
+pre:
+	@mkdir -p build
 
 # Targets
 TARGETS = $(OUT)/Consola.o $(OUT)/Imagen.o $(OUT)/Volumen.o $(OUT)/Controlador.o
@@ -35,7 +38,25 @@ $(OUT)/Volumen.o: $(SRC)/Volumen.cpp $(SRC)/Volumen.h
 $(OUT)/main: $(SRC)/main.cpp $(TARGETS)
 	$(CC) $(FLAGS) $^ -o $@
 
+# Run
+.PHONY: run
+run:
+	@cd $(OUT) && ./main
+
 # Eliminación
 .PHONY: clean
 clean:
 	rm $(OUT)/*
+
+# Copiar los tests
+.PHONY: test1
+test1:
+	cp $(TST)/IM-126-0002-epiT2/* $(OUT)/
+
+.PHONY: test2
+test2:
+	cp $(TST)/t1_icbm_5mm_/* $(OUT)/
+
+.PHONY: clear_tests
+clear_tests:
+	rm -f $(OUT)/*.pgm
