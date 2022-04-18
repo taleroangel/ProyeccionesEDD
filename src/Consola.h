@@ -27,10 +27,10 @@ constexpr const char *_COMMAND_EXIT = "salir"; /**< Comando de salir */
 constexpr const char *_COMMAND_HELP = "ayuda"; /**< Comando de ayuda */
 
 /**
- * @class Command
+ * @class Comando
  * @brief Abstracción de un comando
  */
-class Command
+class Comando
 {
     /* ---- Definiciones de tipo  ---- */
 public:
@@ -91,7 +91,7 @@ public:
      * @param usage [Opcional] Uso del comando Información del uso
      * @param description [Opcional] Descripción del comando
      */
-    Command(
+    Comando(
         std::string command,
         caller_t caller,
         std::string usage = "",
@@ -144,7 +144,7 @@ protected:
 
     /* ---- Variables privadas ---- */
 protected:
-    std::vector<Command> commands; /**< Lista de comandos disponibles */
+    std::vector<Comando> commands; /**< Lista de comandos disponibles */
     bool _exit_ = false;           /**< Salir de la línea de comandos */
 
     /* ---- Constructor ---- */
@@ -153,7 +153,7 @@ public:
      * @brief Construir un intérprete de comandos
      * @param commands Lista con comandos disponibles
      */
-    Interpreter(std::vector<Command> commands = std::vector<Command>());
+    Interpreter(std::vector<Comando> commands = std::vector<Comando>());
 
     /* ---- Métodos privados ---- */
 protected:
@@ -162,7 +162,7 @@ protected:
      * @return Command comando de ayuda
      * @throw Command::Error error en el comando
      */
-    void show_help(Command::arguments_t args) const;
+    void show_help(Comando::arguments_t args) const;
 
     /* ---- Métodos públicos ---- */
 public:
@@ -170,7 +170,7 @@ public:
      * @brief Añadir un comando a la lista
      * @param command Comando a añadir
      */
-    void add_command(Command command);
+    void add_command(Comando command);
 
     /**
      * @brief Llamar a la línea de comandos

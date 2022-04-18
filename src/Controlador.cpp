@@ -9,10 +9,10 @@ Volumen *Controlador::volumen_cargado = nullptr;
 
 //! Componente 1
 
-void Controlador::cargar_imagen(Command::arguments_t args)
+void Controlador::cargar_imagen(Comando::arguments_t args)
 {
 	if (args.size() != 1)
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 
 	// Cargar la imagen en memoria
 	try
@@ -52,10 +52,10 @@ void Controlador::limpiar()
 	}
 }
 
-void Controlador::cargar_volumen(Command::arguments_t args)
+void Controlador::cargar_volumen(Comando::arguments_t args)
 {
 	if (args.size() != 2)
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 
 	// Cargar volumen
 	try
@@ -80,10 +80,10 @@ void Controlador::cargar_volumen(Command::arguments_t args)
 	std::cout << "(proceso satisfactorio) El volumen " + args[0] + " ha sido cargado" << std::endl;
 }
 
-void Controlador::info_imagen(Command::arguments_t args)
+void Controlador::info_imagen(Comando::arguments_t args)
 {
 	if (!args.empty())
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 
 	if (imagen_cargada == nullptr)
 	{
@@ -94,10 +94,10 @@ void Controlador::info_imagen(Command::arguments_t args)
 	std::cout << imagen_cargada->to_string() << std::endl;
 }
 
-void Controlador::info_volumen(Command::arguments_t args)
+void Controlador::info_volumen(Comando::arguments_t args)
 {
 	if (!args.empty())
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 
 	if (volumen_cargado == nullptr)
 	{
@@ -108,14 +108,14 @@ void Controlador::info_volumen(Command::arguments_t args)
 	std::cout << volumen_cargado->to_string() << std::endl;
 }
 
-void Controlador::proyeccion_2d(Command::arguments_t args)
+void Controlador::proyeccion_2d(Comando::arguments_t args)
 {
 	if (args.size() != 3)
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 
 	//* Validar la dirección
 	if (args[0].size() != 1)
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 	switch (args[0].c_str()[0]) // Criterio
 	{
 		// Casos válidos
@@ -125,7 +125,7 @@ void Controlador::proyeccion_2d(Command::arguments_t args)
 		break;
 
 	default:
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 		break;
 	}
 
@@ -134,7 +134,7 @@ void Controlador::proyeccion_2d(Command::arguments_t args)
 		args[1] != "maximo" &&
 		args[1] != "promedio")
 	{
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 	}
 
 	//* Crear la proyección
@@ -163,20 +163,20 @@ void Controlador::proyeccion_2d(Command::arguments_t args)
 
 //! Componente 2
 
-void Controlador::codificar_imagen(Command::arguments_t args)
+void Controlador::codificar_imagen(Comando::arguments_t args)
 {
 	if (args.size() != 1)
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 }
 
-void Controlador::decodificar_archivo(Command::arguments_t args)
+void Controlador::decodificar_archivo(Comando::arguments_t args)
 {
 	if (args.size() != 2)
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 }
 
-void Controlador::segmentar(Command::arguments_t args)
+void Controlador::segmentar(Comando::arguments_t args)
 {
 	if (args.size() <= 1)
-		throw Command::Error(Command::Error::Type::INVALID_ARGS);
+		throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 }

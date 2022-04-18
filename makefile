@@ -1,6 +1,6 @@
 # Compiler and Standard
 CC	= @g++
-STD	= c++11
+STD	= c++14
 
 # Directories
 OUT	= ./build
@@ -38,4 +38,4 @@ $(OUT)/main: $(SRC)/main.cpp $(TARGETS)
 # Eliminación
 .PHONY: clean
 clean:
-	rm -f ./$(OUT)/*
+	rm $(OUT)/*

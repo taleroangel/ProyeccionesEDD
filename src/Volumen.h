@@ -2,48 +2,81 @@
 #define _VOLUMEN_H_
 
 #include "Imagen.h"
-#include <string>
 #include <queue>
+#include <string>
 
 #define MAX_IMAGENES_VOLUMEN 99
 #define MIN_IMAGENES_VOLUMEN 2
 #define EXTENSION_PGM ".pgm"
 
+/**
+ * @class Volumen
+ * @brief Representación de un volumen 3D
+ */
 class Volumen
 {
-private:
-	std::string nombre_base;
-	int tam_volumen;
-	int ancho;
-	int alto;
-	std::queue<Imagen> volumen;
+  private:
+    std::string nombre_base; /**< Nombre base de los archivos*/
+    int tam_volumen;         /**< Tamaño del volumen (Número de capas que lo
+                                componen)*/
+    int ancho;               /**< Ancho del volumen */
+    int alto;                /**< Alto del volumen */
+    std::queue<Imagen> volumen /**< Capas del volumen*/;
 
-public:
-	Volumen() = default;
-	Volumen(std::string nombre_base, int tam);
+  private:
+    /**
+     * @brief Invierte la orientación del volumen, genera un bloque de imágenes
+     * ordenadas en la dirección de las X's
+     *
+     * @param direccion Dirección hacia la cual rotar el bloque de imágenes
+     * @param ancho Variable donde se va a guardar el nuevo ancho
+     * @param alto Variable donde se va a guardar el nuevo alto
+     * @return std::queue<Imagen> Retorna el nuevo bloque de imágenes
+     */
+    std::queue<Imagen> rotar_bloque(const char direccion, int &ancho,
+                                    int &alto);
 
-	std::string to_string() const;
+  public:
+    /**
+     * @brief Construir un volúmen vacío
+     */
+    Volumen() = default;
 
-	std::string get_nombre_base() const;
-	void set_nombre_base(std::string nombreBase);
+    /**
+     * @brief Construir un volúmen a partir de una serie de imágenes con un
+     * nombre base
+     *
+     * @param nombre_base Nombre base de los archivos
+     * @param tam Tamaño del volumen (Imágenes a leer)
+     */
+    Volumen(std::string nombre_base, int tam);
 
-	int get_tam_volumen() const;
-	void set_tam_volumen(int tamVolumen);
+    std::string to_string() const;
 
-	int get_ancho() const;
-	void set_ancho(int ancho);
+    std::string get_nombre_base() const;
+    void set_nombre_base(std::string nombreBase);
 
-	int get_alto() const;
-	void set_alto(int alto);
+    int get_tam_volumen() const;
+    void set_tam_volumen(int tamVolumen);
 
-	std::queue<Imagen> get_volumen() const;
-	void set_volumen(std::queue<Imagen> volumen_);
+    int get_ancho() const;
+    void set_ancho(int ancho);
 
-	// Crear proyeccion del volumen
-	void crear_proyeccion(
-		std::string criterio,
-		char direccion,
-		std::string nombre_archivo);
+    int get_alto() const;
+    void set_alto(int alto);
+
+    std::queue<Imagen> get_volumen() const;
+    void set_volumen(std::queue<Imagen> volumen_);
+
+    /**
+     * @brief Crea una proyección 2D del volumen
+     *
+     * @param criterio puede ser 'promedio', 'maximo', 'minimo', 'mediana'
+     * @param direccion
+     * @param nombre_archivo
+     */
+    void crear_proyeccion(std::string criterio, char direccion,
+                          std::string nombre_archivo);
 };
 
 #endif //_VOLUMEN_H_

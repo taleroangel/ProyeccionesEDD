@@ -5,7 +5,7 @@
 
 // Definiciones de la clase Command
 
-Command::Command(std::string command,
+Comando::Comando(std::string command,
                  caller_t caller,
                  std::string usage,
                  std::string description)
@@ -14,27 +14,27 @@ Command::Command(std::string command,
 {
 }
 
-std::string Command::get_command() const
+std::string Comando::get_command() const
 {
     return this->command;
 }
 
-std::string Command::get_usage() const
+std::string Comando::get_usage() const
 {
     return this->usage;
 }
 
-std::string Command::get_description() const
+std::string Comando::get_description() const
 {
     return this->description;
 }
 
-void Command::call(arguments_t args) const
+void Comando::call(arguments_t args) const
 {
     this->caller(args);
 }
 
-std::string Command::to_string() const
+std::string Comando::to_string() const
 {
     return "Command: " + this->command + "\n" +
            "Caller type: " + typeid(this->caller).name() + "\n" +
@@ -43,11 +43,11 @@ std::string Command::to_string() const
 }
 
 // Definiciones de la excepción
-Command::Error::Error(Command::Error::Type type, std::string what) : type(type), _what(what)
+Comando::Error::Error(Comando::Error::Type type, std::string what) : type(type), _what(what)
 {
 }
 
-const char *Command::Error::what() const noexcept
+const char *Comando::Error::what() const noexcept
 {
     switch (this->type)
     {
@@ -73,34 +73,34 @@ const char *Command::Error::what() const noexcept
     }
 }
 
-const Command::Error::Type Command::Error::get_type() const
+const Comando::Error::Type Comando::Error::get_type() const
 {
     return this->type;
 }
 
 // Definición de la clase Interpreter
 
-Interpreter::Interpreter(std::vector<Command> commands) : commands(commands)
+Interpreter::Interpreter(std::vector<Comando> commands) : commands(commands)
 {
     Interpreter *this_interpreter = this;
 
     // Agregar información del comando ayuda
     this->commands.push_back(
-        Command(
-            _COMMAND_HELP, [=](Command::arguments_t args)
+        Comando(
+            _COMMAND_HELP, [=](Comando::arguments_t args)
             { this_interpreter->show_help(args); },
             "[comando a consultar]",
             "Muestra información de ayuda sobre un comando"));
 
     // Agregar información del comando salir
     this->commands.push_back(
-        Command(
-            _COMMAND_EXIT, [=](Command::arguments_t args)
+        Comando(
+            _COMMAND_EXIT, [=](Comando::arguments_t args)
             { this_interpreter->_exit_ = true; },
             "", "Salir de la línea de comandos"));
 }
 
-void Interpreter::add_command(Command command)
+void Interpreter::add_command(Comando command)
 {
     this->commands.push_back(command);
 }
@@ -129,7 +129,7 @@ void Interpreter::cli()
 
         // Buscar el comando y ejecutarlo
         bool _found_ = false;
-        for (Command command : this->commands)
+        for (Comando command : this->commands)
             if (command.get_command() == tokens[0])
             {
                 _found_ = true;
@@ -139,10 +139,10 @@ void Interpreter::cli()
                 {
                     command.call(tokens);
                 }
-                catch (Command::Error &e)
+                catch (Comando::Error &e)
                 {
                     std::cerr << "(mensaje de error) " << e.what();
-                    if (e.get_type() == Command::Error::Type::INVALID_ARGS)
+                    if (e.get_type() == Comando::Error::Type::INVALID_ARGS)
                         std::cerr << "\tUso: " << command.get_usage() << std::endl;
                 }
                 break;
@@ -154,14 +154,14 @@ void Interpreter::cli()
     }
 }
 
-void Interpreter::show_help(Command::arguments_t args) const
+void Interpreter::show_help(Comando::arguments_t args) const
 {
     // Mostrar todos los comandos línea por línea
     if (args.empty())
     {
         std::cout << "\nMostrando todos los comandos...\n";
         std::cout << "Uso: comando argumento1 [argumento2 opcional]\n";
-        for (Command command : this->commands)
+        for (Comando command : this->commands)
             std::cout
                 << "\n> " << command.get_command()
                 << ": " << command.get_description() << ".\n\tUso: "
@@ -170,14 +170,14 @@ void Interpreter::show_help(Command::arguments_t args) const
 
     // Si se hace mal uso del comando
     else if (args.size() > 1)
-        throw Command::Error(Command::Error::INVALID_ARGS);
+        throw Comando::Error(Comando::Error::INVALID_ARGS);
 
     // Mostrar información de un comando
     else
     {
         // Buscar el comando especificado
         bool found = false;
-        for (Command command : this->commands)
+        for (Comando command : this->commands)
             if (command.get_command() == args[0])
             {
                 std::cout
@@ -190,7 +190,7 @@ void Interpreter::show_help(Command::arguments_t args) const
 
         // Si no se encontró el comando
         if (!found)
-            throw Command::Error(Command::Error::DOES_NOT_EXIST);
+            throw Comando::Error(Comando::Error::DOES_NOT_EXIST);
     }
 
     std::cout << std::endl;

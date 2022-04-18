@@ -21,23 +21,23 @@ public:
 
 	//* Componente 1
 
-	static void cargar_imagen(Command::arguments_t args);
+	static void cargar_imagen(Comando::arguments_t args);
 
-	static void cargar_volumen(Command::arguments_t args);
+	static void cargar_volumen(Comando::arguments_t args);
 
-	static void info_imagen(Command::arguments_t args);
+	static void info_imagen(Comando::arguments_t args);
 
-	static void info_volumen(Command::arguments_t args);
+	static void info_volumen(Comando::arguments_t args);
 
-	static void proyeccion_2d(Command::arguments_t args);
+	static void proyeccion_2d(Comando::arguments_t args);
 
 	//* Componente 2
 
-	static void codificar_imagen(Command::arguments_t args);
+	static void codificar_imagen(Comando::arguments_t args);
 
-	static void decodificar_archivo(Command::arguments_t args);
+	static void decodificar_archivo(Comando::arguments_t args);
 
-	static void segmentar(Command::arguments_t args);
+	static void segmentar(Comando::arguments_t args);
 };
 
 #endif // __CONTROLADOR_H__
