@@ -1,6 +1,6 @@
 # TODO
 ## Errores y Bugs
-- [ ] Revisar error
+- [X] Revisar error
 > $ salir<br>
 > munmap_chunk(): invalid pointer<br>
 > Aborted<br>

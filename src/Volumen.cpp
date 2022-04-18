@@ -4,6 +4,7 @@
 #include <cassert>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <queue>
 #include <sstream>
 #include <stack>
@@ -15,9 +16,6 @@ Volumen::Volumen(std::string nombre_base, int tam)
     if (tam > MAX_IMAGENES_VOLUMEN || tam < MIN_IMAGENES_VOLUMEN)
         throw std::exception();
 
-    // Get max pixel
-    int max_pixel = 0;
-
     int last_ancho = 0, last_alto = 0;
 
     // Por cada imágen que hay que cargar
@@ -27,9 +25,6 @@ Volumen::Volumen(std::string nombre_base, int tam)
         temp << std::setw(2) << std::setfill('0') << i;
         std::string numero_base = temp.str();
         this->volumen.push(Imagen(nombre_base + numero_base + EXTENSION_PGM));
-
-        if (this->volumen.front().get_max_tam() > max_pixel)
-            max_pixel = this->volumen.front().get_max_tam();
 
         if (i == 1)
         {
@@ -50,8 +45,6 @@ Volumen::Volumen(std::string nombre_base, int tam)
     // Ancho y alto son iguales al ancho y alto de las imágenes
     this->ancho = this->volumen.front().get_ancho();
     this->alto = this->volumen.front().get_alto();
-
-    this->max_val = max_pixel;
 
     // El tamaño debe ser igual
     assert(static_cast<int>(this->volumen.size()) == tam_volumen);
@@ -229,7 +222,9 @@ void Volumen::crear_proyeccion(std::string criterio, char direccion,
 
     else if (criterio.compare("minimo") == 0)
     {
-        Imagen::llenar_matrix(resultado, this->max_val + 1);
+		// Llenar la matriz con el maximo valor posible
+        Imagen::llenar_matrix(resultado,
+                              std::numeric_limits<Imagen::elemento_t>::max());
         // Buscar en cada imágen el máximo
         while (!imagenes.empty())
         {
