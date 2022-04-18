@@ -236,3 +236,22 @@ Imagen::matriz_t Imagen::matriz_vacia(int ancho, int alto)
 
     return vacia;
 }
+
+void Imagen::llenar_matrix(matriz_t &mtx, elemento_t value)
+{
+    for (int i = 0; i < mtx.size(); i++)
+        for (int j = 0; j < mtx[i].size(); j++)
+            mtx[i][j] = value;
+}
+
+Imagen Imagen::reflejo_vertical(const Imagen &img)
+{
+    Imagen::matriz_t nueva = matriz_vacia(img.get_ancho(), img.get_alto());
+    Imagen::matriz_t vieja = img.get_pixeles();
+
+    for (int i = 0; i < img.alto; i++)
+        for (int j = 0; j < img.ancho; j++)
+            nueva[img.alto - i - 1][j] = vieja[i][j];
+
+    return Imagen{nueva};
+}

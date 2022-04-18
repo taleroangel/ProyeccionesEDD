@@ -64,7 +64,30 @@ class Imagen
 
     // Miembros estáticos
   public:
+	/**
+	 * @brief Crear una matríz llena de 0's
+	 * 
+	 * @param ancho Ancho de la matriz
+	 * @param alto Alto de la matriz
+	 * @return matriz_t Nueva matriz
+	 */
     static matriz_t matriz_vacia(int ancho, int alto);
+
+	/**
+	 * @brief Llena una matriz existente con el valor especificado
+	 * 
+	 * @param mtx Matriz a modificar
+	 * @param value Valor a llenars
+	 */
+    static void llenar_matrix(matriz_t &mtx, elemento_t value);
+
+    /**
+     * @brief Reflejar la imagen verticalmente
+     * s
+     * @param img Imagen a rotar (no se modifica)
+     * @return Imagen Imagen rotada
+     */
+    static Imagen reflejo_vertical(const Imagen &img);
 };
 
 #endif //_IMAGEN_H_

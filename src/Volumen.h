@@ -22,6 +22,7 @@ class Volumen
     int ancho;               /**< Ancho del volumen */
     int alto;                /**< Alto del volumen */
     std::queue<Imagen> volumen /**< Capas del volumen*/;
+    int max_val; /**> Máximo valor de pixel*/
 
   public:
     /**
