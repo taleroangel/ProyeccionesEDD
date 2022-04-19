@@ -1,14 +1,18 @@
 #include "Volumen.h"
 #include "Imagen.h"
 
+#include <algorithm>
 #include <cassert>
+#include <cmath>
+#include <cstddef>
 #include <iomanip>
-#include <iostream>
 #include <limits>
+#include <numeric>
 #include <queue>
 #include <sstream>
 #include <stack>
 #include <stdexcept>
+#include <vector>
 
 Volumen::Volumen(std::string nombre_base, int tam)
     : nombre_base(nombre_base), tam_volumen(tam)
@@ -251,10 +255,81 @@ void Volumen::crear_proyeccion(std::string criterio, char direccion,
                     resultado[i][j] = 0;
     }
 
-    // TODO crear los criterios
+    else if (criterio.compare("mediana") == 0)
+    {
+        /*
+        !Nota acerca del criterio mediana
+        La mediana se calcula ordenando los datos en un arreglo y encontrando
+        el dato de en medio.
+        * Si el vector es de tamaño impar
+        simplemente se coje el dato de en medio <dato at [ceil(tam / 2)]>
+        * Si el vector es de tamaño par
+        se cojen los dos datos de en medio y se promedian <promedio (dato at
+        [tam / 2], dato at [tam / 2 + 1])>
+        */
+
+        // Matriz de vectores con todos los valores según el píxel
+        std::vector<std::vector<std::vector<Imagen::elemento_t>>> valores{};
+        for (int i = 0; i < alto; i++)
+        {
+            valores.push_back(std::vector<std::vector<Imagen::elemento_t>>{});
+            for (int j = 0; j < ancho; j++)
+            {
+                valores[i].push_back(std::vector<Imagen::elemento_t>{});
+                for (int k = 0; k < imagenes.size(); k++)
+                {
+                    valores[i][j].push_back(0);
+                }
+            }
+        }
+
+        // Colocar en cada imagen la mediana
+        for (int k = 0; !imagenes.empty(); k++)
+        {
+            Imagen::matriz_t pixeles = imagenes.front().get_pixeles();
+
+            // Por cada fila
+            for (int i = 0; i < alto; i++)
+                // Por cada columna
+                for (int j = 0; j < ancho; j++)
+                    valores[i][j][k] = pixeles[i][j];
+
+            imagenes.pop();
+        }
+
+        // Organizar los vectores
+        for (int i = 0; i < alto; i++)
+            for (int j = 0; j < ancho; j++)
+                std::sort(valores[i][j].begin(), valores[i][j].end());
+
+        // Hallar el dato medio y promediarlo
+        for (int i = 0; i < alto; i++)
+            for (int j = 0; j < ancho; j++)
+            {
+                std::vector<std::vector<std::vector<Imagen::elemento_t>>>::
+                    size_type size = valores[i][j].size();
+
+                switch (size % 2)
+                {
+                case 0: // PAR <promedio (dato at [tam / 2], dato at [tam / 2 +
+                        // 1])>
+                    resultado[i][j] = static_cast<Imagen::elemento_t>(
+                        (valores[i][j][size / 2] +
+                         valores[i][j][size / 2 + 1]) /
+                        2);
+                    break;
+
+                default: // IMPAR <dato at [ceil(tam / 2)]>
+                    resultado[i][j] = static_cast<Imagen::elemento_t>(
+                        valores[i][j][std::ceil(size / 2)]);
+                    break;
+                }
+            }
+    }
+
     else
     {
-        throw std::invalid_argument("Dirección errónea");
+        throw std::invalid_argument("Criterio erróneo");
     }
 
     // Grabar el resultado y girarlo adecuadamente

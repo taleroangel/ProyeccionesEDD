@@ -5,9 +5,7 @@
 
 // Definiciones de la clase Command
 
-Comando::Comando(std::string command,
-                 caller_t caller,
-                 std::string usage,
+Comando::Comando(std::string command, caller_t caller, std::string usage,
                  std::string description)
     : command(command), caller(std::move(caller)),
       usage(command + " " + usage), description(description)
@@ -43,7 +41,8 @@ std::string Comando::to_string() const
 }
 
 // Definiciones de la excepción
-Comando::Error::Error(Comando::Error::Type type, std::string what) : type(type), _what(what)
+Comando::Error::Error(Comando::Error::Type type, std::string what)
+    : type(type), _what(what)
 {
 }
 
@@ -85,19 +84,17 @@ Interpreter::Interpreter(std::vector<Comando> commands) : commands(commands)
     Interpreter *this_interpreter = this;
 
     // Agregar información del comando ayuda
-    this->commands.push_back(
-        Comando(
-            _COMMAND_HELP, [=](Comando::arguments_t args)
-            { this_interpreter->show_help(args); },
-            "[comando a consultar]",
-            "Muestra información de ayuda sobre un comando"));
+    this->commands.push_back(Comando(
+        _COMMAND_HELP,
+        [=](Comando::arguments_t args) { this_interpreter->show_help(args); },
+        "[comando a consultar]",
+        "Muestra información de ayuda sobre un comando"));
 
     // Agregar información del comando salir
-    this->commands.push_back(
-        Comando(
-            _COMMAND_EXIT, [=](Comando::arguments_t args)
-            { this_interpreter->_exit_ = true; },
-            "", "Salir de la línea de comandos"));
+    this->commands.push_back(Comando(
+        _COMMAND_EXIT,
+        [=](Comando::arguments_t args) { this_interpreter->_exit_ = true; },
+        "", "Salir de la línea de comandos"));
 }
 
 void Interpreter::add_command(Comando command)
@@ -143,7 +140,13 @@ void Interpreter::cli()
                 {
                     std::cerr << "(mensaje de error) " << e.what();
                     if (e.get_type() == Comando::Error::Type::INVALID_ARGS)
-                        std::cerr << "\tUso: " << command.get_usage() << std::endl;
+                        std::cerr << "\tUso: " << command.get_usage()
+                                  << std::endl;
+                }
+                catch (...)
+                {
+                    std::cerr << "(mensaje de error) Error del sistemas: no "
+                                 "identificado\n";
                 }
                 break;
             }
@@ -162,10 +165,9 @@ void Interpreter::show_help(Comando::arguments_t args) const
         std::cout << "\nMostrando todos los comandos...\n";
         std::cout << "Uso: comando argumento1 [argumento2 opcional]\n";
         for (Comando command : this->commands)
-            std::cout
-                << "\n> " << command.get_command()
-                << ": " << command.get_description() << ".\n\tUso: "
-                << command.get_usage() << "\n";
+            std::cout << "\n> " << command.get_command() << ": "
+                      << command.get_description()
+                      << ".\n\tUso: " << command.get_usage() << "\n";
     }
 
     // Si se hace mal uso del comando
@@ -180,10 +182,9 @@ void Interpreter::show_help(Comando::arguments_t args) const
         for (Comando command : this->commands)
             if (command.get_command() == args[0])
             {
-                std::cout
-                    << "> " << command.get_command()
-                    << ": " << command.get_description() << ".\n\tUso: "
-                    << command.get_usage() << '\n';
+                std::cout << "> " << command.get_command() << ": "
+                          << command.get_description()
+                          << ".\n\tUso: " << command.get_usage() << '\n';
                 found = true;
                 break;
             }
