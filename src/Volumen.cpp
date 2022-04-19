@@ -220,9 +220,11 @@ void Volumen::crear_proyeccion(std::string criterio, char direccion,
         }
     }
 
+    /* En el criterio mínimo hay que ignorar los 0's excepto en las áreas en
+    las que no hay pixeles */
     else if (criterio.compare("minimo") == 0)
     {
-		// Llenar la matriz con el maximo valor posible
+        // Llenar la matriz con el maximo valor posible
         Imagen::llenar_matrix(resultado,
                               std::numeric_limits<Imagen::elemento_t>::max());
         // Buscar en cada imágen el máximo
@@ -233,11 +235,20 @@ void Volumen::crear_proyeccion(std::string criterio, char direccion,
             // Buscar el máximo de cada imágen
             for (int i = 0; i < alto; i++)
                 for (int j = 0; j < ancho; j++)
-                    if (pixeles[i][j] < resultado[i][j])
+                    // Colocar pixel mínimo (Diferente de 0)
+                    if ((pixeles[i][j] < resultado[i][j]) &&
+                        (pixeles[i][j] != 0))
+
                         resultado[i][j] = pixeles[i][j];
 
             imagenes.pop();
         }
+
+        for (int i = 0; i < alto; i++)
+            for (int j = 0; j < ancho; j++)
+                if (resultado[i][j] ==
+                    std::numeric_limits<Imagen::elemento_t>::max())
+                    resultado[i][j] = 0;
     }
 
     // TODO crear los criterios
