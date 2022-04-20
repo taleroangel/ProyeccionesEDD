@@ -162,12 +162,11 @@ void Interpreter::show_help(Comando::arguments_t args) const
     // Mostrar todos los comandos línea por línea
     if (args.empty())
     {
-        std::cout << "\nMostrando todos los comandos...\n";
-        std::cout << "Uso: comando argumento1 [argumento2 opcional]\n";
+        std::cout << "Mostrando todos los comandos...\n";
+        std::cout << "Para ver el uso de un comando: ayuda <comando>\n\n";
         for (Comando command : this->commands)
-            std::cout << "\n> " << command.get_command() << ": "
-                      << command.get_description()
-                      << ".\n\tUso: " << command.get_usage() << "\n";
+            std::cout << "> " << command.get_command() << ": "
+                      << command.get_description() << "\n";
     }
 
     // Si se hace mal uso del comando
