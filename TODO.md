@@ -8,7 +8,7 @@
 
 ### Modificar
 - [ ] Diagrama de bloques no debe tener la descripción completa de todos los nombre
-- [ ] Modificar el documento de diseño
+- [X] Modificar el documento de diseño
 - [X] Los nombres de funciones deben ser _snake_case_
 
 ### Errores y Bugs

@@ -136,7 +136,7 @@ public:
  * @class Interpreter
  * @brief Intérprete de comandos de la línea de comando
  */
-class Interpreter
+class Interprete
 {
     /* ---- Constantes privadas ---- */
 protected:
@@ -153,7 +153,7 @@ public:
      * @brief Construir un intérprete de comandos
      * @param commands Lista con comandos disponibles
      */
-    Interpreter(std::vector<Comando> commands = std::vector<Comando>());
+    Interprete(std::vector<Comando> commands = std::vector<Comando>());
 
     /* ---- Métodos privados ---- */
 protected:

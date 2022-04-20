@@ -68,7 +68,7 @@ std::vector<Comando> commands = {
 int main(int argc, char const *argv[])
 {
     // Crear un intérprete de línea de comandos
-    Interpreter interpreter{commands};
+    Interprete interpreter{commands};
     // Correr el intérprete
     interpreter.cli();
     // Liberar los recursos utilizados

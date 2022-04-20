@@ -59,7 +59,7 @@ const char *Comando::Error::what() const noexcept
         break;
 
     case FILE_ERROR:
-        return "Error en la lectura de archivos";
+        return "Error en la lectura de archivos\n";
         break;
 
     case BAD_USE:
@@ -79,9 +79,9 @@ const Comando::Error::Type Comando::Error::get_type() const
 
 // Definición de la clase Interpreter
 
-Interpreter::Interpreter(std::vector<Comando> commands) : commands(commands)
+Interprete::Interprete(std::vector<Comando> commands) : commands(commands)
 {
-    Interpreter *this_interpreter = this;
+    Interprete *this_interpreter = this;
 
     // Agregar información del comando ayuda
     this->commands.push_back(Comando(
@@ -97,17 +97,17 @@ Interpreter::Interpreter(std::vector<Comando> commands) : commands(commands)
         "", "Salir de la línea de comandos"));
 }
 
-void Interpreter::add_command(Comando command)
+void Interprete::add_command(Comando command)
 {
     this->commands.push_back(command);
 }
 
-void Interpreter::cli()
+void Interprete::cli()
 {
     while (!_exit_)
     {
         // Mostrar el indicador
-        std::cout << Interpreter::indicator << " " << std::flush;
+        std::cout << Interprete::indicator << " " << std::flush;
 
         // Leer el comando
         std::string input;
@@ -157,7 +157,7 @@ void Interpreter::cli()
     }
 }
 
-void Interpreter::show_help(Comando::arguments_t args) const
+void Interprete::show_help(Comando::arguments_t args) const
 {
     // Mostrar todos los comandos línea por línea
     if (args.empty())

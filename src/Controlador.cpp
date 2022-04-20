@@ -1,4 +1,5 @@
 #include "Controlador.h"
+#include "Consola.h"
 
 #include <cstring>
 #include <iostream>
@@ -20,8 +21,8 @@ void Controlador::cargar_imagen(Comando::arguments_t args)
         // Si ya hay un volume cargado
         if (imagen_cargada != nullptr)
         {
-            std::cerr << "(mensaje de error) ya hay una imagen cargada\n";
-            return;
+            throw Comando::Error(Comando::Error::BAD_USE,
+                                 "ya hay una imagen cargada\n");
         }
 
         // Crear la imagen
@@ -66,8 +67,8 @@ void Controlador::cargar_volumen(Comando::arguments_t args)
         // Si ya hay un volumen cargado
         if (volumen_cargado != nullptr)
         {
-            std::cerr << "(mensaje de error) ya hay un volumen cargado\n";
-            return;
+            throw Comando::Error(Comando::Error::BAD_USE,
+                                 "ya hay un volumen cargado\n");
         }
 
         volumen_cargado = new Volumen(args[0], std::stoi(args[1]));
@@ -93,8 +94,8 @@ void Controlador::info_imagen(Comando::arguments_t args)
 
     if (imagen_cargada == nullptr)
     {
-        std::cerr << "(mensaje de error) No hay imagen cargada en memoria\n";
-        return;
+        throw Comando::Error(Comando::Error::BAD_USE,
+                             "No hay imagen cargada en memoria\n");
     }
 
     std::cout << imagen_cargada->to_string() << std::endl;
@@ -107,8 +108,8 @@ void Controlador::info_volumen(Comando::arguments_t args)
 
     if (volumen_cargado == nullptr)
     {
-        std::cerr << "(mensaje de error) No hay volumen cargado en memoria\n";
-        return;
+        throw Comando::Error(Comando::Error::BAD_USE,
+                             "No hay volumen cargado en memoria\n");
     }
 
     std::cout << volumen_cargado->to_string() << std::endl;
@@ -172,6 +173,17 @@ void Controlador::codificar_imagen(Comando::arguments_t args)
 {
     if (args.size() != 1)
         throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
+
+    if (imagen_cargada == nullptr)
+    {
+        throw Comando::Error(Comando::Error::BAD_USE,
+                             "No hay imagen cargada en memoria\n");
+    }
+
+    // Mensaje de éxito
+    std::cout << "(proceso satisfactorio) La imagen en memoria ha sido "
+                 "codificada exitosamente"
+              << std::endl;
 }
 
 void Controlador::decodificar_archivo(Comando::arguments_t args)
