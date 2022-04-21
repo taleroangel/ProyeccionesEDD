@@ -7,10 +7,10 @@
 
 template <typename T> struct NodoCodificacion
 {
-    unsigned long frecuencia = 0;
+    freq_t frecuencia = 0;
 
     NodoCodificacion() = default;
-    NodoCodificacion(int frecuencia);
+    NodoCodificacion(freq_t frecuencia);
 
     virtual ~NodoCodificacion();
 
@@ -24,7 +24,7 @@ template <typename T> struct NodoCodificacion
 };
 
 template <typename T>
-inline NodoCodificacion<T>::NodoCodificacion(int frecuencia)
+inline NodoCodificacion<T>::NodoCodificacion(freq_t frecuencia)
     : frecuencia(frecuencia)
 {
 }

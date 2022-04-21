@@ -33,7 +33,6 @@ void Controlador::cargar_imagen(Comando::arguments_t args)
     {
         std::cerr << "(mensaje de error) La imagen " + args[0] +
                          " no ha podido ser cargada\n";
-        imagen_cargada = nullptr;
         return;
     }
 
@@ -181,9 +180,14 @@ void Controlador::codificar_imagen(Comando::arguments_t args)
                              "No hay imagen cargada en memoria\n");
     }
 
+	// Normalizar la imagen de ser necesario
     Imagen normalizada{*imagen_cargada};
-    normalizada.normalizar();
+    if (normalizada.get_max_tam() > 255)
+        normalizada.normalizar();
+
+	// Construir la codificación de Huffman
     Huffman huff{normalizada};
+	// Guardar el archivo
     huff.guardar_archivo(args[0]);
 
     // Mensaje de éxito

@@ -1,6 +1,7 @@
 #ifndef NODOFRECUENCIA_H
 #define NODOFRECUENCIA_H
 
+#include "CodigoElemento.hxx"
 #include "NodoCodificacion.hxx"
 
 template <typename T> struct NodoFrecuencia : public NodoCodificacion<T>
@@ -9,7 +10,7 @@ template <typename T> struct NodoFrecuencia : public NodoCodificacion<T>
     NodoCodificacion<T> *hijoDer = nullptr;
 
     NodoFrecuencia() = default;
-    NodoFrecuencia(int frecuencia);
+    NodoFrecuencia(freq_t frecuencia);
     ~NodoFrecuencia();
 
     std::vector<CodigoElemento<T>> codigos_elementos(
@@ -17,7 +18,7 @@ template <typename T> struct NodoFrecuencia : public NodoCodificacion<T>
 };
 
 template <typename T>
-inline NodoFrecuencia<T>::NodoFrecuencia(int frecuencia)
+inline NodoFrecuencia<T>::NodoFrecuencia(freq_t frecuencia)
     : NodoCodificacion<T>{frecuencia}
 {
 }

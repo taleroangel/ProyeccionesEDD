@@ -5,7 +5,6 @@
 #include "NodoCodificacion.hxx"
 #include "NodoElemento.hxx"
 #include "NodoFrecuencia.hxx"
-#include <iostream>
 #include <map>
 #include <queue>
 #include <string>
@@ -18,39 +17,48 @@ template <typename T> class ArbolCodificacion
 
   public:
     ArbolCodificacion() = delete;
-    ArbolCodificacion(std::map<T, int> frecuencias);
+    ArbolCodificacion(std::map<T, freq_t> frecuencias);
 
     ~ArbolCodificacion();
 
+    /**
+     * @brief Obtener el código de la codificación de huffman de todos los
+     * elementos
+     *
+     * @return std::vector<CodigoElemento<T>> Vector con los CodigoElemento
+     */
     std::vector<CodigoElemento<T>> codigos_elementos();
-
-    static bool comparador(const NodoCodificacion<T> *a,
-                           const NodoCodificacion<T> *b)
-    {
-        return a->frecuencia < b->frecuencia;
-    };
 };
 
 template <typename T>
-inline ArbolCodificacion<T>::ArbolCodificacion(std::map<T, int> frecuencias)
+inline ArbolCodificacion<T>::ArbolCodificacion(std::map<T, freq_t> frecuencias)
 {
-    // Tabla con las frecuencias
-    std::priority_queue<NodoCodificacion<T> *> cola{};
+    // Cola mínima con las frecuencias
+    std::priority_queue<NodoCodificacion<T> *,
+                        std::vector<NodoCodificacion<T> *>,
+                        std::greater<NodoCodificacion<T> *>>
+        cola{};
 
-    for (std::pair<T, int> x : frecuencias)
-        cola.push(new NodoElemento<T>{x.first, x.second});
+    // Llenar la cola con los elementos
+    for (std::pair<T, freq_t> x : frecuencias)
+        cola.push({dynamic_cast<NodoCodificacion<T> *>(
+            new NodoElemento<T>{x.first, x.second})});
 
-    // Insertar en el árbol
-    int n = cola.size();
-    for (int i = 0; i < n - 1; i++)
+    // Insertar valores en el árbol
+    while (cola.size() > 1)
     {
+        // Crear un nuevo nodo (! memoria)
         NodoFrecuencia<T> *nodoZ = new NodoFrecuencia<T>{};
 
+        // Hijo Izquierdo
         nodoZ->hijoIzq = cola.top();
         cola.pop();
+
+        // Hijo derecho
         nodoZ->hijoDer = cola.top();
         cola.pop();
 
+        // Frecuencia del nodo
         nodoZ->frecuencia =
             nodoZ->hijoIzq->frecuencia + nodoZ->hijoDer->frecuencia;
 
@@ -58,6 +66,7 @@ inline ArbolCodificacion<T>::ArbolCodificacion(std::map<T, int> frecuencias)
         cola.push(nodoZ);
     }
 
+    // El único elemento de la cola es la raíz
     this->raiz = cola.top();
     cola.pop();
 }

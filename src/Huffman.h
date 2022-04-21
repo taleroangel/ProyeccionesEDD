@@ -5,25 +5,26 @@
 #include "Imagen.h"
 #include <cstddef>
 #include <cstdint>
+#include <map>
+#include <queue>
 #include <string>
-#include <unordered_map>
-#include <vector>
 
 class Huffman
 {
   public:
-    using byte = uint8_t;
-    using word = uint16_t;
-    using lword = uint64_t;
+    using byte_t = uint8_t;
+    using word_t = uint16_t;
+    using dword_t = uint32_t;
+    using lword_t = uint64_t;
 
   public:
-    word ancho = 0;
-    word alto = 0;
-    byte maximo = 255;
+    word_t ancho = 0;
+    word_t alto = 0;
+    byte_t maximo = 255;
 
     const Imagen &imagen;
-    ArbolCodificacion<byte> *arbol = nullptr;
-    std::unordered_map<int, CodigoElemento<byte>> codigos;
+    ArbolCodificacion<byte_t> *arbol = nullptr;
+    std::map<byte_t, CodigoElemento<byte_t>> codigos;
 
   public:
     /**
@@ -31,7 +32,6 @@ class Huffman
      * @param img Imagen
      */
     Huffman(const Imagen &img);
-
     ~Huffman();
 
     /**
