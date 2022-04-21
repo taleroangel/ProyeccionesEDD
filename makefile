@@ -8,7 +8,7 @@ SRC	= ./src
 TST = ./test
 
 # Compiler options
-WARNL = -Wall
+WARNL = -Wall -fstandalone-debug
 OPT = -O0
 
 # Flags
@@ -20,20 +20,22 @@ pre:
 	@mkdir -p build
 
 # Targets
-TARGETS = $(OUT)/Consola.o $(OUT)/Imagen.o $(OUT)/Volumen.o $(OUT)/Controlador.o
-
+TARGETS = $(OUT)/Consola.o $(OUT)/Imagen.o $(OUT)/Volumen.o $(OUT)/Controlador.o $(OUT)/Huffman.o
 # Compilacion
 $(OUT)/Consola.o: $(SRC)/Consola.cpp $(SRC)/Consola.h
-	$(CC) -c $(FLAGS) $< -o $@
+	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
 $(OUT)/Controlador.o: $(SRC)/Controlador.cpp $(SRC)/Controlador.h
-	$(CC) -c $(FLAGS) $< -o $@
+	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
 $(OUT)/Imagen.o: $(SRC)/Imagen.cpp $(SRC)/Imagen.h
-	$(CC) -c $(FLAGS) $< -o $@
+	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
 $(OUT)/Volumen.o: $(SRC)/Volumen.cpp $(SRC)/Volumen.h
-	$(CC) -c $(FLAGS) $< -o $@
+	$(CC) -c $(FLAGS) $< -o $@ -fPIE
+
+$(OUT)/Huffman.o: $(SRC)/Huffman.cpp $(SRC)/Huffman.h $(SRC)/CodigoElemento.hxx $(SRC)/ArbolCodificacion.hxx $(SRC)/NodoCodificacion.hxx $(SRC)/NodoElemento.hxx $(SRC)/NodoFrecuencia.hxx
+	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
 $(OUT)/main: $(SRC)/main.cpp $(TARGETS)
 	$(CC) $(FLAGS) $^ -o $@

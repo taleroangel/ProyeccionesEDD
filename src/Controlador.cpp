@@ -1,5 +1,6 @@
 #include "Controlador.h"
 #include "Consola.h"
+#include "Huffman.h"
 
 #include <cstring>
 #include <iostream>
@@ -179,6 +180,11 @@ void Controlador::codificar_imagen(Comando::arguments_t args)
         throw Comando::Error(Comando::Error::BAD_USE,
                              "No hay imagen cargada en memoria\n");
     }
+
+    Imagen normalizada{*imagen_cargada};
+    normalizada.normalizar();
+    Huffman huff{normalizada};
+    huff.guardar_archivo(args[0]);
 
     // Mensaje de éxito
     std::cout << "(proceso satisfactorio) La imagen en memoria ha sido "

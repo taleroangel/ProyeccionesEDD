@@ -2,6 +2,7 @@
 #define __CONTROLADOR_H__
 
 #include "Consola.h"
+#include "Huffman.h"
 #include "Imagen.h"
 #include "Volumen.h"
 

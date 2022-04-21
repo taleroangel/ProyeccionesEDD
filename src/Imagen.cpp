@@ -1,6 +1,7 @@
 #include "Imagen.h"
 
 #include <fstream>
+#include <functional>
 #include <sstream>
 #include <stdexcept>
 
@@ -254,4 +255,19 @@ Imagen Imagen::reflejo_vertical(const Imagen &img)
             nueva[img.alto - i - 1][j] = vieja[i][j];
 
     return Imagen{nueva};
+}
+
+void Imagen::normalizar()
+{
+    int tam_max = this->max_tam;
+    // Convierte el pixel a valores de 0 hasta 255
+    std::function<int(int)> map_pixel = [tam_max](int valor) -> int {
+        return static_cast<int>((valor * 255) / tam_max);
+    };
+
+    for (int i = 0; i < this->alto; i++)
+        for (int j = 0; j < this->ancho; j++)
+            this->matriz_pixeles[i][j] = map_pixel(this->matriz_pixeles[i][j]);
+
+    this->max_tam = 255;
 }
