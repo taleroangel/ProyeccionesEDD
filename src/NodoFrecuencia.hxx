@@ -43,11 +43,11 @@ inline std::vector<CodigoElemento<T>> NodoFrecuencia<T>::codigos_elementos(
 {
     std::vector<CodigoElemento<T>> izquierdo{};
     if (this->hijoIzq != nullptr)
-        izquierdo = this->hijoIzq->codigos_elementos(codigo + '0');
+        izquierdo = this->hijoIzq->codigos_elementos("0" + codigo);
 
     std::vector<CodigoElemento<T>> derecho{};
     if (this->hijoDer != nullptr)
-        derecho = this->hijoDer->codigos_elementos(codigo + '1');
+        derecho = this->hijoDer->codigos_elementos("1" + codigo);
 
     std::vector<CodigoElemento<T>> resultado{};
     resultado.insert(resultado.end(), izquierdo.begin(), izquierdo.end());

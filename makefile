@@ -8,7 +8,7 @@ SRC	= ./src
 TST = ./test
 
 # Compiler options
-WARNL = -Wall -fstandalone-debug
+WARNL = -Wall -fstandalone-debug -D_DEBUG_
 OPT = -O0
 
 # Flags
