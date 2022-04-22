@@ -17,6 +17,12 @@ void Controlador::cargar_imagen(Comando::arguments_t args)
     if (args.size() != 1)
         throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
 
+    if (args[0].substr(args[0].find_last_of(".") + 1) != "pgm")
+    {
+        throw Comando::Error(Comando::Error::BAD_USE,
+                             "Extensión del archivo errónea\n");
+    }
+
     // Cargar la imagen en memoria
     try
     {
@@ -181,6 +187,13 @@ void Controlador::codificar_imagen(Comando::arguments_t args)
                              "No hay imagen cargada en memoria\n");
     }
 
+    // Verificar que el nombre_archivo termine por .pgm
+    if (args[0].substr(args[0].find_last_of(".") + 1) != "huffman")
+    {
+        throw Comando::Error(Comando::Error::BAD_USE,
+                             "Extensión del archivo errónea\n");
+    }
+
     try
     {
         // Normalizar la imagen de ser necesario
@@ -195,7 +208,8 @@ void Controlador::codificar_imagen(Comando::arguments_t args)
     }
     catch (...)
     {
-        throw std::exception();
+        throw Comando::Error(Comando::Error::BAD_USE,
+                             "No se pudo codificar la imágen\n");
     }
 
     // Mensaje de éxito
@@ -208,6 +222,14 @@ void Controlador::decodificar_archivo(Comando::arguments_t args)
 {
     if (args.size() != 2)
         throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
+
+    // Verificar que el nombre_archivo termine por .pgm
+    if ((args[0].substr(args[0].find_last_of(".") + 1) != "huffman") ||
+        (args[1].substr(args[1].find_last_of(".") + 1) != "pgm"))
+    {
+        throw Comando::Error(Comando::Error::BAD_USE,
+                             "Extensión del archivo errónea\n");
+    }
 
     try
     {

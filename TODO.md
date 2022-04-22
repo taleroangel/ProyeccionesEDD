@@ -7,7 +7,7 @@
 - [X] Algoritmo de proyección
 
 ### Modificar
-- [ ] Diagrama de bloques no debe tener la descripción completa de todos los nombre
+- [X] Diagrama de bloques no debe tener la descripción completa de todos los nombre
 - [X] Modificar el documento de diseño
 - [X] Los nombres de funciones deben ser _snake_case_
 

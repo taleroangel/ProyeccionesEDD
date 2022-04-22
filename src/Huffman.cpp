@@ -46,8 +46,7 @@ Huffman::Huffman(const Imagen &img)
     for (int i = 0; i < datos.size(); i++)
         codigos[datos[i].elemento] = datos[i];
 }
-// todo
-#include <iostream>
+
 Huffman::Huffman(const std::string nombre_archivo, std::string salida)
     : imagen{nullptr}
 {
