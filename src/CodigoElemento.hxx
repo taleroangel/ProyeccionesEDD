@@ -7,7 +7,7 @@
 #include <string>
 
 //! Tipo de dato de la frecuencia
-using freq_t = std::uint32_t;
+using freq_t = std::uint64_t;
 
 template <typename T> struct CodigoElemento
 {

@@ -3,6 +3,7 @@
 #include "Huffman.h"
 
 #include <cstring>
+#include <exception>
 #include <iostream>
 
 //* Inicializar variables estáticas
@@ -180,15 +181,22 @@ void Controlador::codificar_imagen(Comando::arguments_t args)
                              "No hay imagen cargada en memoria\n");
     }
 
-	// Normalizar la imagen de ser necesario
-    Imagen normalizada{*imagen_cargada};
-    if (normalizada.get_max_tam() > 255)
-        normalizada.normalizar();
+    try
+    {
+        // Normalizar la imagen de ser necesario
+        Imagen normalizada{*imagen_cargada};
+        if (normalizada.get_max_tam() > 255)
+            normalizada.normalizar();
 
-	// Construir la codificación de Huffman
-    Huffman huff{normalizada};
-	// Guardar el archivo
-    huff.guardar_archivo(args[0]);
+        // Construir la codificación de Huffman
+        Huffman huff{normalizada};
+        // Guardar el archivo
+        huff.guardar_archivo(args[0]);
+    }
+    catch (...)
+    {
+        throw std::exception();
+    }
 
     // Mensaje de éxito
     std::cout << "(proceso satisfactorio) La imagen en memoria ha sido "
@@ -200,6 +208,21 @@ void Controlador::decodificar_archivo(Comando::arguments_t args)
 {
     if (args.size() != 2)
         throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
+
+    try
+    {
+        Huffman huffman{args[0], args[1]};
+    }
+    catch (std::exception &e)
+    {
+        std::cerr << e.what() << std::endl;
+        throw Comando::Error(Comando::Error::BAD_USE,
+                             "(proceso satisfactorio) El archivo " + args[0] +
+                                 " no ha podido ser decodificado\n");
+    }
+
+    std::cout << "(proceso satisfactorio) El archivo " + args[0] +
+                     " ha sido decodificado exitosamente\n";
 }
 
 void Controlador::segmentar(Comando::arguments_t args)

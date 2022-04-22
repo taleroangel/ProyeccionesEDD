@@ -21,6 +21,7 @@ template <typename T> struct NodoCodificacion
     bool operator>(const NodoCodificacion<T> &other) const;
     bool operator<=(const NodoCodificacion<T> &other) const;
     bool operator>=(const NodoCodificacion<T> &other) const;
+    bool operator()(const NodoCodificacion<T> &other) const;
 };
 
 template <typename T>
@@ -59,6 +60,13 @@ inline bool NodoCodificacion<T>::operator>=(
     const NodoCodificacion<T> &other) const
 {
     return !(*this < other);
+}
+
+template <typename T>
+inline bool NodoCodificacion<T>::operator()(
+    const NodoCodificacion<T> &other) const
+{
+    return *this < other;
 }
 
 #endif // NODOCODIFICACION_H

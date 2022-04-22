@@ -12,6 +12,9 @@
 
 template <typename T> class ArbolCodificacion
 {
+    // Huffman tiene acceso
+    friend class Huffman;
+
   private:
     NodoCodificacion<T> *raiz = nullptr;
 
@@ -34,15 +37,24 @@ template <typename T>
 inline ArbolCodificacion<T>::ArbolCodificacion(std::map<T, freq_t> frecuencias)
 {
     // Cola mínima con las frecuencias
+    struct deref_less
+    {
+        bool operator()(const NodoCodificacion<T> *a,
+                        const NodoCodificacion<T> *b)
+        {
+            return a->frecuencia > b->frecuencia;
+        }
+    };
+
     std::priority_queue<NodoCodificacion<T> *,
-                        std::vector<NodoCodificacion<T> *>,
-                        std::greater<NodoCodificacion<T> *>>
+                        std::vector<NodoCodificacion<T> *>, deref_less>
         cola{};
 
     // Llenar la cola con los elementos
     for (std::pair<T, freq_t> x : frecuencias)
-        cola.push({dynamic_cast<NodoCodificacion<T> *>(
-            new NodoElemento<T>{x.first, x.second})});
+        if (x.second != 0)
+            cola.push({dynamic_cast<NodoCodificacion<T> *>(
+                new NodoElemento<T>{x.first, x.second})});
 
     // Insertar valores en el árbol
     while (cola.size() > 1)
