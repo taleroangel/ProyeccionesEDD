@@ -43,12 +43,23 @@ class GeneradorSemillas {
      *
      * @param imagen Imagen a partir de la cual se generaron los caminos
      * @param caminos Caminos generados por 'generar_caminos'
-     * @return std::vector<std::vector<Semilla>> Matriz de Semillas
+     * @return std::vector<Semilla> Vector de Semillas
      */
-    std::vector<std::vector<Semilla>> generar_matriz_etiquetas(
+    static std::vector<Semilla> generar_etiquetas(
         Imagen imagen,
         std::vector<std::pair<Semilla, Grafo<Semilla>::dijkstra_path>>
             caminos);
+
+    /**
+     * @brief Generar la matriz (imagen) a partir de las etiquetas de las
+     * semillas
+     * @param semillas Vector con las semillas
+     * @param ancho Ancho de la matriz
+     * @param alto Alto de la matriz
+     * @return Imagen::matriz_t Matriz generada
+     */
+    static Imagen::matriz_t generar_matrix(std::vector<Semilla> semillas,
+                                           int ancho, int alto);
 };
 
 #endif  // GENERADORSEMILLAS_H

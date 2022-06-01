@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <limits>
+#include <stdexcept>
 #include <utility>
 
 #include "Arista.hxx"
@@ -72,17 +73,13 @@ GeneradorSemillas::generar_caminos(std::vector<Semilla> semillas) {
 
     return caminos;
 }
-std::vector<std::vector<Semilla>> GeneradorSemillas::generar_matriz_etiquetas(
+
+std::vector<Semilla> GeneradorSemillas::generar_etiquetas(
     Imagen imagen,
     std::vector<std::pair<Semilla, Grafo<Semilla>::dijkstra_path>> caminos) {
     // Inicializar matrices
     Imagen::matriz_t matrix = imagen.get_pixeles();
-
-    // Inicializar matriz de resultados
-    std::vector<std::vector<Semilla>> resultado{};
-    // Agregar las filas
-    for (size_t i = 0; i < matrix.size(); i++)
-        resultado.push_back(std::vector<Semilla>{});
+    std::vector<Semilla> resultado{};
 
     // Por cada fila
     for (size_t i = 0; i < matrix.size(); i++) {
@@ -110,9 +107,27 @@ std::vector<std::vector<Semilla>> GeneradorSemillas::generar_matriz_etiquetas(
             pixel.etiqueta = min_etiqueta;
 
             // Meter en la matriz la semilla
-            resultado[i].push_back(pixel);
+            resultado.push_back(pixel);
         }
     }
 
     return resultado;
+}
+
+Imagen::matriz_t GeneradorSemillas::generar_matrix(
+    std::vector<Semilla> semillas, int ancho, int alto) {
+    // Generar la matriz vacía
+    Imagen::matriz_t mtx = Imagen::matriz_vacia(ancho, alto);
+
+    for (size_t i = 0; i < semillas.size(); i++) {
+        Semilla semilla = semillas[i];
+        // Verificar boundaires
+        if (semilla.x >= ancho || semilla.y >= alto)
+            throw std::runtime_error(
+                "Semilla fuera de los límites de la imágen");
+        // Añadir a la matriz (Etiqueta)
+        mtx[semilla.x][semilla.y] = semilla.etiqueta;
+    }
+
+    return mtx;
 }

@@ -8,6 +8,7 @@
 #include "Consola.h"
 #include "GeneradorSemillas.h"
 #include "Huffman.h"
+#include "Imagen.h"
 #include "Semilla.h"
 
 //* Inicializar variables estáticas
@@ -235,9 +236,19 @@ void Controlador::segmentar(Comando::arguments_t args) {
     // Semillas
     std::vector<Semilla> semillas{};
 
-    for (size_t i = 1; i < args.size(); i++)
-        semillas.push_back(Semilla{std::stoul(args[i]), std::stoul(args[++i]),
-                                   0, std::stoi(args[++i])});
+    for (size_t i = 1; i < args.size(); i++) {
+        // Crear la semilla
+        Semilla semilla{std::stoul(args[i]), std::stoul(args[++i]), 0,
+                        std::stoi(args[++i])};
+        // Verificar que no esté fuera de rango
+        if (semilla.x >= imagen_cargada->get_ancho() ||
+            semilla.y >= imagen_cargada->get_alto())
+            throw Comando::Error(
+                Comando::Error::BAD_USE,
+                "Una semilla tiene coordenadas que exceden a la imagen\n");
+
+        semillas.push_back(semilla);
+    }
 
     // Generar la semilla
     GeneradorSemillas generador(*imagen_cargada);
@@ -246,6 +257,15 @@ void Controlador::segmentar(Comando::arguments_t args) {
     std::vector<std::pair<Semilla, Grafo<Semilla>::dijkstra_path>> caminos =
         generador.generar_caminos(semillas);
 
-    std::vector<std::vector<Semilla>> mtx_etiquetas =
-        generador.generar_matriz_etiquetas(*imagen_cargada, caminos);
+    // Generar las etiquetas
+    std::vector<Semilla> etiquetas =
+        generador.generar_etiquetas(*imagen_cargada, caminos);
+
+    // Generar la matriz
+    Imagen::matriz_t mtx_imagen = generador.generar_matrix(
+        etiquetas, imagen_cargada->get_ancho(), imagen_cargada->get_alto());
+
+    // Generar la imágen
+    Imagen imagen{mtx_imagen};
+    imagen.guardar_archivo(archivo);
 }
