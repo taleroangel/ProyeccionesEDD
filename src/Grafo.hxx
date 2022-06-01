@@ -124,11 +124,11 @@ Grafo<T, Tipo>::Grafo(std::vector<Arista<T>> conexiones) {
     // Por cada arista que el usuario define
     for (Arista<T> arista : conexiones) {
         // Insertar la arista en la lista de adyacencia
-        this->lista_adyacencia[arista.get_desde().get_value()].push_back(
+        this->lista_adyacencia[arista.get_desde()].push_back(
             arista);
         // Si es no dirigido insertar el inverso
         if (Tipo == GRAFO_NO_DIRIGIDO)
-            this->lista_adyacencia[arista.get_hasta().get_value()].push_back(
+            this->lista_adyacencia[arista.get_hasta()].push_back(
                 arista.inverso());
 
         // Insertar los vertices
