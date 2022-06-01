@@ -14,13 +14,13 @@
  * Copyright © 2022
  */
 
-#ifndef __CONSOLE_H__
-#define __CONSOLE_H__
+#ifndef CONSOLE_H
+#define CONSOLE_H
 
-#include <string>
-#include <functional>
-#include <vector>
 #include <exception>
+#include <functional>
+#include <string>
+#include <vector>
 
 // Comandos obligatorios
 constexpr const char *_COMMAND_EXIT = "salir"; /**< Comando de salir */
@@ -30,10 +30,9 @@ constexpr const char *_COMMAND_HELP = "ayuda"; /**< Comando de ayuda */
  * @class Comando
  * @brief Abstracción de un comando
  */
-class Comando
-{
+class Comando {
     /* ---- Definiciones de tipo  ---- */
-public:
+   public:
     using arguments_t = std::vector<std::string>; /**< Vector de argumentos */
 
     /**
@@ -48,15 +47,13 @@ public:
      * @class Error
      * @brief Excepción que puede elevarse cuando un comando falla
      */
-    class Error : public std::exception
-    {
-    public:
+    class Error : public std::exception {
+       public:
         /**
          * @enum Type
          * @brief tipo de fallo que se generó
          */
-        enum Type
-        {
+        enum Type {
             DEFAULT,
             INVALID_ARGS,
             DOES_NOT_EXIST,
@@ -64,25 +61,25 @@ public:
             BAD_USE
         };
 
-    private:
+       private:
         Type type;
         std::string _what;
 
-    public:
+       public:
         Error(Type type, std::string what = "Exception thrown");
         const char *what() const noexcept override;
         const Type get_type() const;
     };
 
     /* ---- Variables privadas ---- */
-protected:
+   protected:
     std::string command;     /**< Nombre del comando */
     caller_t caller;         /**< Función que el comando llama */
     std::string usage;       /**< Información de cómo usar el comando */
     std::string description; /**< Descripción del comando */
 
     /* ---- Constructores ---- */
-public:
+   public:
     /**
      * @brief Construir un comando
      *
@@ -91,14 +88,11 @@ public:
      * @param usage [Opcional] Uso del comando Información del uso
      * @param description [Opcional] Descripción del comando
      */
-    Comando(
-        std::string command,
-        caller_t caller,
-        std::string usage = "",
-        std::string description = "No hay descipción...");
+    Comando(std::string command, caller_t caller, std::string usage = "",
+            std::string description = "No hay descipción...");
 
     /* ---- Métodos públicas ---- */
-public:
+   public:
     /**
      * @brief Obtener el nombre del comando
      * @return std::string Nombre del comando
@@ -136,19 +130,19 @@ public:
  * @class Interpreter
  * @brief Intérprete de comandos de la línea de comando
  */
-class Interprete
-{
+class Interprete {
     /* ---- Constantes privadas ---- */
-protected:
-    static constexpr char indicator = '$'; /**< Indicador de la línea de comandos */
+   protected:
+    static constexpr char indicator =
+        '$'; /**< Indicador de la línea de comandos */
 
     /* ---- Variables privadas ---- */
-protected:
+   protected:
     std::vector<Comando> commands; /**< Lista de comandos disponibles */
     bool _exit_ = false;           /**< Salir de la línea de comandos */
 
     /* ---- Constructor ---- */
-public:
+   public:
     /**
      * @brief Construir un intérprete de comandos
      * @param commands Lista con comandos disponibles
@@ -156,16 +150,17 @@ public:
     Interprete(std::vector<Comando> commands = std::vector<Comando>());
 
     /* ---- Métodos privados ---- */
-protected:
+   protected:
     /**
-     * @brief Función que muestra información de todos los comandos ayuda sobre un comando en específico
+     * @brief Función que muestra información de todos los comandos ayuda sobre
+     * un comando en específico
      * @return Command comando de ayuda
      * @throw Command::Error error en el comando
      */
     void show_help(Comando::arguments_t args) const;
 
     /* ---- Métodos públicos ---- */
-public:
+   public:
     /**
      * @brief Añadir un comando a la lista
      * @param command Comando a añadir
@@ -174,9 +169,10 @@ public:
 
     /**
      * @brief Llamar a la línea de comandos
-     * Crea un bucle infinito que recibe comandos hasta que se reciba el comando especial de salida
+     * Crea un bucle infinito que recibe comandos hasta que se reciba el
+     * comando especial de salida
      */
     void cli();
 };
 
-#endif // __CONSOLE_H__
+#endif  // CONSOLE_H

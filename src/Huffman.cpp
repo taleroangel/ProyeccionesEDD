@@ -1,10 +1,4 @@
 #include "Huffman.h"
-#include "ArbolCodificacion.hxx"
-#include "CodigoElemento.hxx"
-#include "Imagen.h"
-#include "NodoCodificacion.hxx"
-#include "NodoElemento.hxx"
-#include "NodoFrecuencia.hxx"
 
 #include <cstdlib>
 #include <cstring>
@@ -17,18 +11,25 @@
 #include <string>
 #include <utility>
 
+#include "ArbolCodificacion.hxx"
+#include "CodigoElemento.hxx"
+#include "Imagen.h"
+#include "NodoCodificacion.hxx"
+#include "NodoElemento.hxx"
+#include "NodoFrecuencia.hxx"
+
 Huffman::Huffman(const Imagen &img)
-    : ancho(img.get_ancho()), alto(img.get_alto()), maximo(img.get_max_tam()),
-      imagen(&img)
-{
+    : ancho(img.get_ancho()),
+      alto(img.get_alto()),
+      maximo(img.get_max_tam()),
+      imagen(&img) {
     // Verificar normalización
     if (img.get_max_tam() > 255)
         throw std::invalid_argument("La imagen no está normalizada");
 
     // Construir mapa de frecuencias
     std::map<byte_t, freq_t> frecuencias{};
-    for (int i = 0; i <= 255; i++)
-        frecuencias[i] = 0;
+    for (int i = 0; i <= 255; i++) frecuencias[i] = 0;
 
     // Calcular frecuencias en la imágen
     Imagen::matriz_t pixeles = img.get_pixeles();
@@ -48,8 +49,7 @@ Huffman::Huffman(const Imagen &img)
 }
 
 Huffman::Huffman(const std::string nombre_archivo, std::string salida)
-    : imagen{nullptr}
-{
+    : imagen{nullptr} {
     //* Abrir el archivo
     std::ifstream archivo(nombre_archivo, std::ios::binary | std::ios::in);
 
@@ -64,10 +64,8 @@ Huffman::Huffman(const std::string nombre_archivo, std::string salida)
 
     //* Frecuencias
     // Escribir todas las frecuencias
-    for (byte_t i = 0; i < 255; i++)
-    {
-        if (!codigos.count(i))
-            codigos[i] = CodigoElemento<byte_t>{i, 0, ""};
+    for (byte_t i = 0; i < 255; i++) {
+        if (!codigos.count(i)) codigos[i] = CodigoElemento<byte_t>{i, 0, ""};
 
         // Read binary
         archivo.read((char *)&codigos[i].frecuencia, sizeof(lword_t));
@@ -84,14 +82,12 @@ Huffman::Huffman(const std::string nombre_archivo, std::string salida)
     std::vector<byte_t> bytes{};
 
     std::queue<int> cadenabits{};
-    while (!archivo.eof())
-    {
+    while (!archivo.eof()) {
         byte_t byte = 0x0000;
         archivo.read((char *)&byte, sizeof(byte_t));
 
         // If there's nothing to read
-        if (archivo.gcount() == 0)
-            break;
+        if (archivo.gcount() == 0) break;
 
         // Transform every bit
         for (int k = 8; k > 0; k--)
@@ -103,19 +99,14 @@ Huffman::Huffman(const std::string nombre_archivo, std::string salida)
 
     std::vector<CodigoElemento<byte_t>> codigos = arbol->codigos_elementos();
     int total_leer = 0;
-    for (auto cod : codigos)
-        total_leer += cod.codigo.size() * cod.frecuencia;
+    for (auto cod : codigos) total_leer += cod.codigo.size() * cod.frecuencia;
 
-    for (int leidos = 0; leidos <= total_leer;)
-    {
+    for (int leidos = 0; leidos <= total_leer;) {
         // Si es una hoja
-        if (typeid(*actual) == typeid(NodoElemento<byte_t>))
-        {
+        if (typeid(*actual) == typeid(NodoElemento<byte_t>)) {
             pixeles.push(dynamic_cast<NodoElemento<byte_t> *>(actual)->dato);
             actual = arbol->raiz;
-        }
-        else
-        {
+        } else {
             // Si es 1
             int bit = cadenabits.front();
             if (bit == 1)
@@ -133,8 +124,7 @@ Huffman::Huffman(const std::string nombre_archivo, std::string salida)
     // Pasar los datos a la imagen
     Imagen::matriz_t matriz = Imagen::matriz_vacia(this->ancho, this->alto);
     for (int i = 0; i < this->alto; i++)
-        for (int j = 0; j < this->ancho; j++)
-        {
+        for (int j = 0; j < this->ancho; j++) {
             matriz[i][j] = pixeles.front();
             pixeles.pop();
         }
@@ -148,17 +138,14 @@ Huffman::Huffman(const std::string nombre_archivo, std::string salida)
     archivo.close();
 }
 
-Huffman::~Huffman()
-{
-    if (this->arbol != nullptr)
-    {
+Huffman::~Huffman() {
+    if (this->arbol != nullptr) {
         delete arbol;
         arbol = nullptr;
     }
 }
 
-void Huffman::guardar_archivo(std::string nombre_archivo)
-{
+void Huffman::guardar_archivo(std::string nombre_archivo) {
     //* Abrir el archivo
     std::ofstream archivo(nombre_archivo, std::ios::binary | std::ios::out);
 #ifdef _DEBUG_
@@ -184,10 +171,8 @@ void Huffman::guardar_archivo(std::string nombre_archivo)
 
     //* Frecuencias
     // Escribir todas las frecuencias
-    for (byte_t i = 0; i < 255; i++)
-    {
-        if (!codigos.count(i))
-            codigos[i] = CodigoElemento<byte_t>{i, 0, ""};
+    for (byte_t i = 0; i < 255; i++) {
+        if (!codigos.count(i)) codigos[i] = CodigoElemento<byte_t>{i, 0, ""};
 
         // Write binary
         archivo.write((char *)&codigos[i].frecuencia, sizeof(lword_t));
@@ -215,16 +200,12 @@ void Huffman::guardar_archivo(std::string nombre_archivo)
 #endif
 
     //* Transformar a bytes
-    for (int i = 0; i < general.size();)
-    {
+    for (int i = 0; i < general.size();) {
         byte_t byte = 0x0000;
         // Transform every bit
-        for (int k = 8; k > 0; k--, i++)
-        {
-            if (i >= general.size())
-                break;
-            if (general.at(i) == '1')
-                (byte |= (1 << (k - 1)));
+        for (int k = 8; k > 0; k--, i++) {
+            if (i >= general.size()) break;
+            if (general.at(i) == '1') (byte |= (1 << (k - 1)));
         }
 
         // Escribir el bit

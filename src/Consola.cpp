@@ -7,33 +7,20 @@
 
 Comando::Comando(std::string command, caller_t caller, std::string usage,
                  std::string description)
-    : command(command), caller(std::move(caller)),
-      usage(command + " " + usage), description(description)
-{
-}
+    : command(command),
+      caller(std::move(caller)),
+      usage(command + " " + usage),
+      description(description) {}
 
-std::string Comando::get_command() const
-{
-    return this->command;
-}
+std::string Comando::get_command() const { return this->command; }
 
-std::string Comando::get_usage() const
-{
-    return this->usage;
-}
+std::string Comando::get_usage() const { return this->usage; }
 
-std::string Comando::get_description() const
-{
-    return this->description;
-}
+std::string Comando::get_description() const { return this->description; }
 
-void Comando::call(arguments_t args) const
-{
-    this->caller(args);
-}
+void Comando::call(arguments_t args) const { this->caller(args); }
 
-std::string Comando::to_string() const
-{
+std::string Comando::to_string() const {
     return "Command: " + this->command + "\n" +
            "Caller type: " + typeid(this->caller).name() + "\n" +
            "Usage: " + this->usage + ".\n" +
@@ -42,45 +29,39 @@ std::string Comando::to_string() const
 
 // Definiciones de la excepción
 Comando::Error::Error(Comando::Error::Type type, std::string what)
-    : type(type), _what(what)
-{
-}
+    : type(type), _what(what) {}
 
-const char *Comando::Error::what() const noexcept
-{
-    switch (this->type)
-    {
-    case INVALID_ARGS:
-        return "Argumentos inválidos\n";
-        break;
+const char *Comando::Error::what() const noexcept {
+    switch (this->type) {
+        case INVALID_ARGS:
+            return "Argumentos inválidos\n";
+            break;
 
-    case DOES_NOT_EXIST:
-        return "El comando no existe\n";
-        break;
+        case DOES_NOT_EXIST:
+            return "El comando no existe\n";
+            break;
 
-    case FILE_ERROR:
-        return "Error en la lectura de archivos\n";
-        break;
+        case FILE_ERROR:
+            return "Error en la lectura de archivos\n";
+            break;
 
-    case BAD_USE:
-        return _what.c_str();
-        break;
+        case BAD_USE:
+            return _what.c_str();
+            break;
 
-    default:
-        return "Comando inválido\n";
-        break;
+        default:
+            return "Comando inválido\n";
+            break;
     }
 }
 
-const Comando::Error::Type Comando::Error::get_type() const
-{
+const Comando::Error::Type Comando::Error::get_type() const {
     return this->type;
 }
 
 // Definición de la clase Interpreter
 
-Interprete::Interprete(std::vector<Comando> commands) : commands(commands)
-{
+Interprete::Interprete(std::vector<Comando> commands) : commands(commands) {
     Interprete *this_interpreter = this;
 
     // Agregar información del comando ayuda
@@ -97,15 +78,12 @@ Interprete::Interprete(std::vector<Comando> commands) : commands(commands)
         "", "Salir de la línea de comandos"));
 }
 
-void Interprete::add_command(Comando command)
-{
+void Interprete::add_command(Comando command) {
     this->commands.push_back(command);
 }
 
-void Interprete::cli()
-{
-    while (!_exit_)
-    {
+void Interprete::cli() {
+    while (!_exit_) {
         // Mostrar el indicador
         std::cout << Interprete::indicator << " " << std::flush;
 
@@ -113,8 +91,7 @@ void Interprete::cli()
         std::string input;
         std::getline(std::cin, input);
 
-        if (input.empty())
-            continue;
+        if (input.empty()) continue;
 
         // Tokenizar el comando
         std::stringstream str_stream(input);
@@ -127,24 +104,18 @@ void Interprete::cli()
         // Buscar el comando y ejecutarlo
         bool _found_ = false;
         for (Comando command : this->commands)
-            if (command.get_command() == tokens[0])
-            {
+            if (command.get_command() == tokens[0]) {
                 _found_ = true;
                 tokens.erase(tokens.begin());
                 //! Capturar cualquier excepción que eleve
-                try
-                {
+                try {
                     command.call(tokens);
-                }
-                catch (Comando::Error &e)
-                {
+                } catch (Comando::Error &e) {
                     std::cerr << "(mensaje de error) " << e.what();
                     if (e.get_type() == Comando::Error::Type::INVALID_ARGS)
                         std::cerr << "\tUso: " << command.get_usage()
                                   << std::endl;
-                }
-                catch (...)
-                {
+                } catch (...) {
                     std::cerr << "(mensaje de error) Error del sistemas: no "
                                  "identificado\n";
                 }
@@ -157,11 +128,9 @@ void Interprete::cli()
     }
 }
 
-void Interprete::show_help(Comando::arguments_t args) const
-{
+void Interprete::show_help(Comando::arguments_t args) const {
     // Mostrar todos los comandos línea por línea
-    if (args.empty())
-    {
+    if (args.empty()) {
         std::cout << "Mostrando todos los comandos...\n";
         std::cout << "Para ver el uso de un comando: ayuda <comando>\n\n";
         for (Comando command : this->commands)
@@ -174,13 +143,11 @@ void Interprete::show_help(Comando::arguments_t args) const
         throw Comando::Error(Comando::Error::INVALID_ARGS);
 
     // Mostrar información de un comando
-    else
-    {
+    else {
         // Buscar el comando especificado
         bool found = false;
         for (Comando command : this->commands)
-            if (command.get_command() == args[0])
-            {
+            if (command.get_command() == args[0]) {
                 std::cout << "> " << command.get_command() << ": "
                           << command.get_description()
                           << ".\n\tUso: " << command.get_usage() << '\n';
@@ -189,8 +156,7 @@ void Interprete::show_help(Comando::arguments_t args) const
             }
 
         // Si no se encontró el comando
-        if (!found)
-            throw Comando::Error(Comando::Error::DOES_NOT_EXIST);
+        if (!found) throw Comando::Error(Comando::Error::DOES_NOT_EXIST);
     }
 
     std::cout << std::endl;

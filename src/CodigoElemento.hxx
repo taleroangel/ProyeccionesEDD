@@ -9,8 +9,8 @@
 //! Tipo de dato de la frecuencia
 using freq_t = std::uint64_t;
 
-template <typename T> struct CodigoElemento
-{
+template <typename T>
+struct CodigoElemento {
     T elemento;
     freq_t frecuencia;
     std::string codigo;
@@ -26,16 +26,14 @@ template <typename T> struct CodigoElemento
 template <typename T>
 inline CodigoElemento<T>::CodigoElemento(T elemento, freq_t frecuencia,
                                          std::string codigo)
-    : elemento{elemento}, frecuencia{frecuencia}, codigo{codigo}
-{
-}
+    : elemento{elemento}, frecuencia{frecuencia}, codigo{codigo} {}
 
-template <typename T> inline std::string CodigoElemento<T>::to_string()
-{
+template <typename T>
+inline std::string CodigoElemento<T>::to_string() {
     std::stringstream string;
     string << "[Elemento: " << this->elemento << ", Freq: " << frecuencia
            << ", Codigo: " << codigo << ']';
     return string.str();
 }
 
-#endif // CODIGOELEMENTO_HXX
+#endif  // CODIGOELEMENTO_HXX

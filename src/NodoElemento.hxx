@@ -1,12 +1,13 @@
-#ifndef NODOELEMENTO_H
-#define NODOELEMENTO_H
+#ifndef NODOELEMENTO_HXX
+#define NODOELEMENTO_HXX
+
+#include <vector>
 
 #include "CodigoElemento.hxx"
 #include "NodoCodificacion.hxx"
-#include <vector>
 
-template <typename T> struct NodoElemento : public NodoCodificacion<T>
-{
+template <typename T>
+struct NodoElemento : public NodoCodificacion<T> {
     T dato;
 
     NodoElemento<T>() = default;
@@ -18,16 +19,13 @@ template <typename T> struct NodoElemento : public NodoCodificacion<T>
 
 template <typename T>
 inline NodoElemento<T>::NodoElemento(T elemento, freq_t frecuencia)
-    : NodoCodificacion<T>{frecuencia}, dato{elemento}
-{
-}
+    : NodoCodificacion<T>{frecuencia}, dato{elemento} {}
 
 template <typename T>
 inline std::vector<CodigoElemento<T>> NodoElemento<T>::codigos_elementos(
-    std::string codigo)
-{
+    std::string codigo) {
     return std::vector<CodigoElemento<T>>{
         CodigoElemento<T>{this->dato, this->frecuencia, codigo}};
 }
 
-#endif // NODOELEMENTO_H
+#endif  // NODOELEMENTO_HXX

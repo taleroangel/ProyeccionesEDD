@@ -14,11 +14,12 @@
  * Copyright © 2022
  */
 
+#include <cstdlib>
+#include <iostream>
+
 #include "Consola.h"
 #include "Controlador.h"
 
-#include <cstdlib>
-#include <iostream>
 
 //* El controlador del sistema es 'Global'
 
@@ -65,8 +66,7 @@ std::vector<Comando> commands = {
 };
 
 //! main
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]) {
     // Crear un intérprete de línea de comandos
     Interprete interpreter{commands};
     // Correr el intérprete

@@ -1,20 +1,19 @@
-#ifndef _IMAGEN_H_
-#define _IMAGEN_H_
+#ifndef IMAGEN_H
+#define IMAGEN_H
 
 #include <cstdlib>
 #include <string>
 #include <vector>
 
-class Imagen
-{
-  public:
-    using elemento_t = int; /**< Elemento a guardar en la matriz*/
-    using fila_t = std::vector<elemento_t>; /**< Fila de una matriz*/
+class Imagen {
+   public:
+    using pixel_t = int;                 /**< Elemento a guardar en la matriz*/
+    using fila_t = std::vector<pixel_t>; /**< Fila de una matriz*/
     // El alto es el vector de afuera
     // El ancho son los vectores de adentro (fila)
     using matriz_t = std::vector<fila_t>; /**< Matriz de píxeles*/
 
-  private:
+   private:
     std::string formato_imagen = "P2";
     int ancho;
     int alto;
@@ -22,15 +21,15 @@ class Imagen
     matriz_t matriz_pixeles;
     std::string nombre_archivo;
 
-  public:
+   public:
     Imagen() = default;
     Imagen(matriz_t matriz_pixeles);
     Imagen(std::string nombre_archivo);
 
     // Rule of three
-    ~Imagen() = default;                         // Destructor
-    Imagen(const Imagen &) = default;            // Copy constructor
-    Imagen &operator=(const Imagen &) = default; // Copy assigment operator
+    ~Imagen() = default;                          // Destructor
+    Imagen(const Imagen &) = default;             // Copy constructor
+    Imagen &operator=(const Imagen &) = default;  // Copy assigment operator
 
     /**
      * @brief Guardar la imágen actual en un archivo .pgm
@@ -63,7 +62,7 @@ class Imagen
     std::string to_string();
 
     // Miembros estáticos
-  public:
+   public:
     /**
      * @brief Crear una matríz llena de 0's
      *
@@ -79,7 +78,7 @@ class Imagen
      * @param mtx Matriz a modificar
      * @param value Valor a llenars
      */
-    static void llenar_matrix(matriz_t &mtx, elemento_t value);
+    static void llenar_matrix(matriz_t &mtx, pixel_t value);
 
     /**
      * @brief Reflejar la imagen verticalmente
@@ -96,4 +95,4 @@ class Imagen
     void normalizar();
 };
 
-#endif //_IMAGEN_H_
+#endif  // IMAGEN_H

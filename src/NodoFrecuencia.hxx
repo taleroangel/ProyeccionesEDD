@@ -1,11 +1,11 @@
-#ifndef NODOFRECUENCIA_H
-#define NODOFRECUENCIA_H
+#ifndef NODOFRECUENCIA_HXX
+#define NODOFRECUENCIA_HXX
 
 #include "CodigoElemento.hxx"
 #include "NodoCodificacion.hxx"
 
-template <typename T> struct NodoFrecuencia : public NodoCodificacion<T>
-{
+template <typename T>
+struct NodoFrecuencia : public NodoCodificacion<T> {
     NodoCodificacion<T> *hijoIzq = nullptr;
     NodoCodificacion<T> *hijoDer = nullptr;
 
@@ -19,20 +19,16 @@ template <typename T> struct NodoFrecuencia : public NodoCodificacion<T>
 
 template <typename T>
 inline NodoFrecuencia<T>::NodoFrecuencia(freq_t frecuencia)
-    : NodoCodificacion<T>{frecuencia}
-{
-}
+    : NodoCodificacion<T>{frecuencia} {}
 
-template <typename T> inline NodoFrecuencia<T>::~NodoFrecuencia()
-{
-    if (this->hijoIzq != nullptr)
-    {
+template <typename T>
+inline NodoFrecuencia<T>::~NodoFrecuencia() {
+    if (this->hijoIzq != nullptr) {
         delete hijoIzq;
         hijoIzq = nullptr;
     }
 
-    if (this->hijoDer != nullptr)
-    {
+    if (this->hijoDer != nullptr) {
         delete hijoDer;
         hijoDer = nullptr;
     }
@@ -40,8 +36,7 @@ template <typename T> inline NodoFrecuencia<T>::~NodoFrecuencia()
 
 template <typename T>
 inline std::vector<CodigoElemento<T>> NodoFrecuencia<T>::codigos_elementos(
-    std::string codigo)
-{
+    std::string codigo) {
     std::vector<CodigoElemento<T>> izquierdo{};
     if (this->hijoIzq != nullptr)
         izquierdo = this->hijoIzq->codigos_elementos(codigo + "0");
@@ -57,4 +52,4 @@ inline std::vector<CodigoElemento<T>> NodoFrecuencia<T>::codigos_elementos(
     return resultado;
 }
 
-#endif // NODOFRECUENCIA_H
+#endif  // NODOFRECUENCIA_HXX

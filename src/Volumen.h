@@ -1,9 +1,11 @@
-#ifndef _VOLUMEN_H_
-#define _VOLUMEN_H_
+#ifndef VOLUMEN_H
+#define VOLUMEN_H
 
-#include "Imagen.h"
 #include <queue>
 #include <string>
+
+#include "Imagen.h"
+
 
 #define MAX_IMAGENES_VOLUMEN 99
 #define MIN_IMAGENES_VOLUMEN 2
@@ -13,9 +15,8 @@
  * @class Volumen
  * @brief Representación de un volumen 3D
  */
-class Volumen
-{
-  private:
+class Volumen {
+   private:
     std::string nombre_base; /**< Nombre base de los archivos*/
     int tam_volumen;         /**< Tamaño del volumen (Número de capas que lo
                                 componen)*/
@@ -23,7 +24,7 @@ class Volumen
     int alto;                /**< Alto del volumen */
     std::queue<Imagen> volumen /**< Capas del volumen*/;
 
-  public:
+   public:
     /**
      * @brief Construir un volúmen vacío
      */
@@ -66,4 +67,4 @@ class Volumen
                           std::string nombre_archivo);
 };
 
-#endif //_VOLUMEN_H_
+#endif  // VOLUMEN_H

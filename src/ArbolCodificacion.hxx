@@ -1,24 +1,25 @@
 #ifndef ARBOLCODIFICACION_HXX
 #define ARBOLCODIFICACION_HXX
 
-#include "CodigoElemento.hxx"
-#include "NodoCodificacion.hxx"
-#include "NodoElemento.hxx"
-#include "NodoFrecuencia.hxx"
 #include <map>
 #include <queue>
 #include <string>
 #include <vector>
 
-template <typename T> class ArbolCodificacion
-{
+#include "CodigoElemento.hxx"
+#include "NodoCodificacion.hxx"
+#include "NodoElemento.hxx"
+#include "NodoFrecuencia.hxx"
+
+template <typename T>
+class ArbolCodificacion {
     // Huffman tiene acceso
     friend class Huffman;
 
-  private:
+   private:
     NodoCodificacion<T> *raiz = nullptr;
 
-  public:
+   public:
     ArbolCodificacion() = delete;
     ArbolCodificacion(std::map<T, freq_t> frecuencias);
 
@@ -34,14 +35,12 @@ template <typename T> class ArbolCodificacion
 };
 
 template <typename T>
-inline ArbolCodificacion<T>::ArbolCodificacion(std::map<T, freq_t> frecuencias)
-{
+inline ArbolCodificacion<T>::ArbolCodificacion(
+    std::map<T, freq_t> frecuencias) {
     // Cola mínima con las frecuencias
-    struct deref_less
-    {
+    struct deref_less {
         bool operator()(const NodoCodificacion<T> *a,
-                        const NodoCodificacion<T> *b)
-        {
+                        const NodoCodificacion<T> *b) {
             return a->frecuencia > b->frecuencia;
         }
     };
@@ -57,8 +56,7 @@ inline ArbolCodificacion<T>::ArbolCodificacion(std::map<T, freq_t> frecuencias)
                 new NodoElemento<T>{x.first, x.second})});
 
     // Insertar valores en el árbol
-    while (cola.size() > 1)
-    {
+    while (cola.size() > 1) {
         // Crear un nuevo nodo (! memoria)
         NodoFrecuencia<T> *nodoZ = new NodoFrecuencia<T>{};
 
@@ -83,19 +81,18 @@ inline ArbolCodificacion<T>::ArbolCodificacion(std::map<T, freq_t> frecuencias)
     cola.pop();
 }
 
-template <typename T> inline ArbolCodificacion<T>::~ArbolCodificacion()
-{
-    if (this->raiz != nullptr)
-    {
+template <typename T>
+inline ArbolCodificacion<T>::~ArbolCodificacion() {
+    if (this->raiz != nullptr) {
         delete raiz;
         raiz = nullptr;
     }
 }
 
 template <typename T>
-inline std::vector<CodigoElemento<T>> ArbolCodificacion<T>::codigos_elementos()
-{
+inline std::vector<CodigoElemento<T>>
+ArbolCodificacion<T>::codigos_elementos() {
     return this->raiz->codigos_elementos("");
 }
 
-#endif // ARBOLCODIFICACION_HXX
+#endif  // ARBOLCODIFICACION_HXX

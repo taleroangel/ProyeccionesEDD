@@ -1,12 +1,13 @@
-#ifndef NODOCODIFICACION_H
-#define NODOCODIFICACION_H
+#ifndef NODOCODIFICACION_HXX
+#define NODOCODIFICACION_HXX
 
-#include "CodigoElemento.hxx"
 #include <string>
 #include <vector>
 
-template <typename T> struct NodoCodificacion
-{
+#include "CodigoElemento.hxx"
+
+template <typename T>
+struct NodoCodificacion {
     freq_t frecuencia = 0;
 
     NodoCodificacion() = default;
@@ -26,47 +27,39 @@ template <typename T> struct NodoCodificacion
 
 template <typename T>
 inline NodoCodificacion<T>::NodoCodificacion(freq_t frecuencia)
-    : frecuencia(frecuencia)
-{
-}
+    : frecuencia(frecuencia) {}
 
-template <typename T> inline NodoCodificacion<T>::~NodoCodificacion()
-{
-}
+template <typename T>
+inline NodoCodificacion<T>::~NodoCodificacion() {}
 
 template <typename T>
 inline bool NodoCodificacion<T>::operator<(
-    const NodoCodificacion<T> &other) const
-{
+    const NodoCodificacion<T> &other) const {
     return this->frecuencia < other.frecuencia;
 }
 
 template <typename T>
 inline bool NodoCodificacion<T>::operator>(
-    const NodoCodificacion<T> &other) const
-{
+    const NodoCodificacion<T> &other) const {
     return other < *this;
 }
 
 template <typename T>
 inline bool NodoCodificacion<T>::operator<=(
-    const NodoCodificacion<T> &other) const
-{
+    const NodoCodificacion<T> &other) const {
     return !(other < *this);
 }
 
 template <typename T>
 inline bool NodoCodificacion<T>::operator>=(
-    const NodoCodificacion<T> &other) const
-{
+    const NodoCodificacion<T> &other) const {
     return !(*this < other);
 }
 
 template <typename T>
 inline bool NodoCodificacion<T>::operator()(
-    const NodoCodificacion<T> &other) const
-{
+    const NodoCodificacion<T> &other) const {
     return *this < other;
 }
 
-#endif // NODOCODIFICACION_H
+#endif  // NODOCODIFICACION_HXX
