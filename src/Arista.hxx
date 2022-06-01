@@ -3,15 +3,13 @@
 
 #include <ostream>
 
-#include "Vertice.hxx"
-
 /* --------- Declaraciones --------- */
 template <typename T>
 class Arista {
    public:
     /* --------- Constructores --------- */
     Arista() = delete;
-    Arista(Vertice<T>, Vertice<T>, double = 1);
+    Arista(T, T, double = 1);
     ~Arista() = default;
 
     /* --------- Copy/Move constructors --------- */
@@ -26,8 +24,8 @@ class Arista {
 
     /* --------- Attributes --------- */
    protected:
-    Vertice<T> desde;
-    Vertice<T> hasta;
+    T desde;
+    T hasta;
     double peso;
 
     /* --------- Methods --------- */
@@ -41,22 +39,22 @@ class Arista {
     Arista<T> inverso();
 
     /* --------- Getters & Setters --------- */
-    Vertice<T> get_desde() const;
-    Vertice<T> get_hasta() const;
+    T get_desde() const;
+    T get_hasta() const;
     double get_peso() const;
 };
 
 template <typename T>
-inline Arista<T>::Arista(Vertice<T> desde, Vertice<T> hasta, double peso)
+inline Arista<T>::Arista(T desde, T hasta, double peso)
     : desde{desde}, hasta{hasta}, peso{peso} {}
 
 template <typename T>
-inline Vertice<T> Arista<T>::get_hasta() const {
+inline T Arista<T>::get_hasta() const {
     return this->hasta;
 }
 
 template <typename T>
-inline Vertice<T> Arista<T>::get_desde() const {
+inline T Arista<T>::get_desde() const {
     return this->desde;
 }
 

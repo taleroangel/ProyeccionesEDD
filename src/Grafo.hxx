@@ -16,7 +16,6 @@
 #include <vector>
 
 #include "Arista.hxx"
-#include "Vertice.hxx"
 
 #define GRAFO_DIRIGIDO true
 #define GRAFO_NO_DIRIGIDO false
@@ -34,9 +33,8 @@ template <typename T, bool Tipo = GRAFO_NO_DIRIGIDO>
 class Grafo {
     /* --------- Typedefs --------- */
    public:
-    using lista_adyacencia_t = std::map<Vertice<T>, std::list<Arista<T>>>;
-    using dijkstra_path =
-        std::map<Vertice<T>, std::pair<double, Vertice<T> *>>;
+    using lista_adyacencia_t = std::map<T, std::list<Arista<T>>>;
+    using dijkstra_path = std::map<T, std::pair<double, T *>>;
 
     /* --------- Constructor/Destructor, Move, Copy and Assigment --------- */
    public:
@@ -64,7 +62,7 @@ class Grafo {
                                     const Grafo<K, Type> &rhs);
 
    private:
-    std::set<Vertice<T>> vertices;
+    std::set<T> vertices;
     lista_adyacencia_t lista_adyacencia;
 
     /* --------- Métodos --------- */
@@ -77,14 +75,14 @@ class Grafo {
      * mapa cuyas llaves son los vértices del grafo, y cuyo valor es un par
      * (costo, predecesor)
      */
-    dijkstra_path dijkstra_algorithm(Vertice<T> vertice_inicial);
+    dijkstra_path dijkstra_algorithm(T vertice_inicial);
 
     /**
      * @brief Eliminar un vértice del grafo
      *
      * @param remover Vertice a eliminar
      */
-    void quitar_vertice(Vertice<T> remover);
+    void quitar_vertice(T remover);
 
     /**
      * @brief Verificar si el grafo está vacío
@@ -114,7 +112,7 @@ class Grafo {
      * @param value valor a buscar
      * @return double Peso de dikjstra
      */
-    static double weight_of(dijkstra_path list, Vertice<T> value);
+    static double weight_of(dijkstra_path list, T value);
 };
 
 template <typename T, bool Tipo>
@@ -141,18 +139,18 @@ Grafo<T, Tipo>::Grafo(std::vector<Arista<T>> conexiones) {
 
 template <typename T, bool Tipo>
 typename Grafo<T, Tipo>::dijkstra_path Grafo<T, Tipo>::dijkstra_algorithm(
-    Vertice<T> vertice_inicial) {
+    T vertice_inicial) {
     // Crear el mapa de pesos
     dijkstra_path pesos;
-    std::set<Vertice<T>> unvisited{};  // Vertices a visitar
-    std::set<Vertice<T>> visited{};    // Vertices visitados
+    std::set<T> unvisited{};  // Vertices a visitar
+    std::set<T> visited{};    // Vertices visitados
 
     // Llenar el mapa de pesos
     for (auto vertice = this->vertices.begin();
          vertice != this->vertices.end(); vertice++) {
         pesos[*vertice] =
             (*vertice == vertice_inicial
-                 ? std::make_pair(0.0, &const_cast<Vertice<T> &>(*vertice))
+                 ? std::make_pair(0.0, &const_cast<T &>(*vertice))
                  : std::make_pair(std::numeric_limits<double>::infinity(),
                                   nullptr));
         unvisited.insert(*vertice);
@@ -161,7 +159,7 @@ typename Grafo<T, Tipo>::dijkstra_path Grafo<T, Tipo>::dijkstra_algorithm(
     // Mientras que hayan nodos sin visitar
     while (!unvisited.empty()) {
         // Obtener el nodo con el menor peso
-        Vertice<T> *vertice = nullptr;
+        T *vertice = nullptr;
         double menor_peso = std::numeric_limits<double>::infinity();
 
         // AUTO es usado porque el compilador no puede generar un iterador
@@ -170,7 +168,7 @@ typename Grafo<T, Tipo>::dijkstra_path Grafo<T, Tipo>::dijkstra_algorithm(
         for (auto it = pesos.begin(); it != pesos.end(); it++)
             if ((it->second.first < menor_peso) &&
                 (unvisited.find(it->first) != unvisited.end())) {
-                vertice = &const_cast<Vertice<T> &>(it->first);
+                vertice = &const_cast<T &>(it->first);
                 menor_peso = it->second.first;
             }
 
@@ -197,7 +195,7 @@ typename Grafo<T, Tipo>::dijkstra_path Grafo<T, Tipo>::dijkstra_algorithm(
 }
 
 template <typename T, bool Tipo>
-inline void Grafo<T, Tipo>::quitar_vertice(Vertice<T> remover) {
+inline void Grafo<T, Tipo>::quitar_vertice(T remover) {
     // Quitar el nodo de la lista
     this->lista_adyacencia.erase(remover);
     this->vertices.erase(remover);
@@ -232,8 +230,7 @@ inline std::string Grafo<T, Tipo>::dijkstra_path_string(dijkstra_path list) {
     std::stringstream os;
 
     os << "Recorridos (Dijkstra):\n";
-    for (std::pair<Vertice<T>, std::pair<double, Vertice<T> *>> vertice :
-         list) {
+    for (std::pair<T, std::pair<double, T *>> vertice : list) {
         os << vertice.first << "\t<-\t";
         if (vertice.second.second != nullptr) {
             os << *vertice.second.second;
@@ -247,9 +244,9 @@ inline std::string Grafo<T, Tipo>::dijkstra_path_string(dijkstra_path list) {
 }
 
 template <typename T, bool Tipo>
-inline double Grafo<T, Tipo>::weight_of(dijkstra_path list, Vertice<T> value) {
+inline double Grafo<T, Tipo>::weight_of(dijkstra_path list, T value) {
     // Por cada elemento de dikjstra
-    for (std::pair<Vertice<T>, std::pair<double, Vertice<T> *>> item : list)
+    for (std::pair<T, std::pair<double, T *>> item : list)
         if (item.first == value) return item.second.first;
 
     throw std::runtime_error("Value does not exist");
@@ -263,7 +260,7 @@ inline std::ostream &operator<<(std::ostream &os, const Grafo<K, Type> &rhs) {
        << "\n\t\"n_vertices\": " << rhs.vertices.size() << ','
        << "\n\t\"vertices\": [";
 
-    for (Vertice<K> vertice : rhs.vertices) os << vertice << ',';
+    for (K vertice : rhs.vertices) os << vertice << ',';
 
     os << "\b],\n\t\"adjacency_list\": [";
 
