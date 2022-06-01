@@ -1,6 +1,7 @@
 #ifndef GRAFO_HXX
 #define GRAFO_HXX
 
+#include <exception>
 #include <initializer_list>
 #include <limits>
 #include <list>
@@ -8,6 +9,7 @@
 #include <ostream>
 #include <set>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <typeinfo>
 #include <utility>
@@ -77,12 +79,42 @@ class Grafo {
      */
     dijkstra_path dijkstra_algorithm(Vertice<T> vertice_inicial);
 
+    /**
+     * @brief Eliminar un vértice del grafo
+     *
+     * @param remover Vertice a eliminar
+     */
     void quitar_vertice(Vertice<T> remover);
+
+    /**
+     * @brief Verificar si el grafo está vacío
+     *
+     * @return true Es vacío
+     * @return false No está vacío
+     */
     bool es_vacio() const;
 
     /* --------- Miembros estáticos --------- */
    public:
+    /**
+     * @brief Convertir los caminos de dikjstra a un formato en string para ser
+     * leído por humanos
+     *
+     * @param list Caminos de dijkstra
+     * @return std::string Texto con los caminos de dijkstra
+     */
     static std::string dijkstra_path_string(dijkstra_path list);
+
+    /**
+     * @brief Obtener el peso de un valor especificado en el algoritmo de
+     * dijkstra, a diferencia de usar el valor como llave en los valores de
+     * dijkstra, esta función utiliza el operador de comparación ==
+     *
+     * @param list caminos del algoritmo de dijkstra
+     * @param value valor a buscar
+     * @return double Peso de dikjstra
+     */
+    static double weight_of(dijkstra_path list, Vertice<T> value);
 };
 
 template <typename T, bool Tipo>
@@ -212,6 +244,15 @@ inline std::string Grafo<T, Tipo>::dijkstra_path_string(dijkstra_path list) {
     }
 
     return os.str();
+}
+
+template <typename T, bool Tipo>
+inline double Grafo<T, Tipo>::weight_of(dijkstra_path list, Vertice<T> value) {
+    // Por cada elemento de dikjstra
+    for (std::pair<Vertice<T>, std::pair<double, Vertice<T> *>> item : list)
+        if (item.first == value) return item.second.first;
+
+    throw std::runtime_error("Value does not exist");
 }
 
 template <typename K, bool Type>

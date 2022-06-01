@@ -3,9 +3,12 @@
 #include <cstring>
 #include <exception>
 #include <iostream>
+#include <string>
 
 #include "Consola.h"
+#include "GeneradorSemillas.h"
 #include "Huffman.h"
+#include "Semilla.h"
 
 //* Inicializar variables estáticas
 Imagen *Controlador::imagen_cargada = nullptr;
@@ -216,6 +219,33 @@ void Controlador::decodificar_archivo(Comando::arguments_t args) {
 //! Componente 3
 
 void Controlador::segmentar(Comando::arguments_t args) {
+    // Validación de argumentos
     if (args.size() <= 1)
         throw Comando::Error(Comando::Error::Type::INVALID_ARGS);
+
+    // Valida que la imágen está cargada
+    if (imagen_cargada == nullptr) {
+        throw Comando::Error(Comando::Error::BAD_USE,
+                             "No hay imagen cargada en memoria\n");
+    }
+
+    // Obtener el primer argumento
+    std::string archivo = args[0];
+
+    // Semillas
+    std::vector<Semilla> semillas{};
+
+    for (size_t i = 1; i < args.size(); i++)
+        semillas.push_back(Semilla{std::stoul(args[i]), std::stoul(args[++i]),
+                                   0, std::stoi(args[++i])});
+
+    // Generar la semilla
+    GeneradorSemillas generador(*imagen_cargada);
+
+    // Obtener los caminos de Dijkstra
+    std::vector<std::pair<Semilla, Grafo<Semilla>::dijkstra_path>> caminos =
+        generador.generar_caminos(semillas);
+
+    std::vector<std::vector<Semilla>> mtx_etiquetas =
+        generador.generar_matriz_etiquetas(*imagen_cargada, caminos);
 }

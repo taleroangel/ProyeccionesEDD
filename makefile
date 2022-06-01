@@ -20,13 +20,13 @@ pre:
 	@mkdir -p build
 
 # Targets
-TARGETS = $(OUT)/Consola.o $(OUT)/Imagen.o $(OUT)/Volumen.o $(OUT)/Controlador.o $(OUT)/Huffman.o $(OUT)/GeneradorSemillas.o
+TARGETS = $(OUT)/Consola.o $(OUT)/Imagen.o $(OUT)/Volumen.o $(OUT)/Controlador.o $(OUT)/Huffman.o $(OUT)/GeneradorSemillas.o $(OUT)/Semilla.o
 
 # Object code
 $(OUT)/Consola.o: $(SRC)/Consola.cpp $(SRC)/Consola.h
 	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
-$(OUT)/Controlador.o: $(SRC)/Controlador.cpp $(SRC)/Controlador.h
+$(OUT)/Controlador.o: $(SRC)/Controlador.cpp $(SRC)/Controlador.h $(TARGETS)
 	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
 $(OUT)/Imagen.o: $(SRC)/Imagen.cpp $(SRC)/Imagen.h
@@ -38,7 +38,10 @@ $(OUT)/Volumen.o: $(SRC)/Volumen.cpp $(SRC)/Volumen.h
 $(OUT)/Huffman.o: $(SRC)/Huffman.cpp $(SRC)/Huffman.h $(SRC)/CodigoElemento.hxx $(SRC)/ArbolCodificacion.hxx $(SRC)/NodoCodificacion.hxx $(SRC)/NodoElemento.hxx $(SRC)/NodoFrecuencia.hxx
 	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
-$(OUT)/GeneradorSemillas.o: $(SRC)/GeneradorSemillas.cpp $(SRC)/GeneradorSemillas.h $(SRC)/Imagen.h
+$(OUT)/GeneradorSemillas.o: $(SRC)/GeneradorSemillas.cpp $(SRC)/GeneradorSemillas.h $(SRC)/Imagen.h $(OUT)/Semilla.o
+	$(CC) -c $(FLAGS) $< -o $@ -fPIE
+
+$(OUT)/Semilla.o: $(SRC)/Semilla.cpp $(SRC)/Semilla.h
 	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
 # Main compilation target
