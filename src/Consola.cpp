@@ -1,7 +1,9 @@
 #include "Consola.h"
 
+#include <exception>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 // Definiciones de la clase Command
 
@@ -115,8 +117,20 @@ void Interprete::cli() {
                     if (e.get_type() == Comando::Error::Type::INVALID_ARGS)
                         std::cerr << "\tUso: " << command.get_usage()
                                   << std::endl;
-                } catch (...) {
-                    std::cerr << "(mensaje de error) Error del sistemas: no "
+                } catch (std::runtime_error &e) {
+                    std::cerr
+                        << "(mensaje de error) Error del sistema: " << e.what()
+                        << '\n';
+                }
+
+                catch (std::exception &e) {
+                    std::cerr
+                        << "(mensaje de error) Error del sistema: " << e.what()
+                        << '\n';
+                }
+
+                catch (...) {
+                    std::cerr << "(mensaje de error) Error del sistema: no "
                                  "identificado\n";
                 }
                 break;

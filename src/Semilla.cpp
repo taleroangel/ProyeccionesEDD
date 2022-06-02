@@ -4,18 +4,12 @@ Semilla::Semilla(size_t x, size_t y, Imagen::pixel_t intensidad, int etiqueta)
     : x{x}, y{y}, intensidad{intensidad}, etiqueta{etiqueta} {}
 
 bool Semilla::operator<(const Semilla &other) const {
-    return this->intensidad < other.intensidad;
+    if (this->x < other.x) return true;
+    if (other.x < this->x) return false;
+    return this->y < other.y;
 }
 
 bool Semilla::operator>(const Semilla &other) const { return other < *this; }
-
-bool Semilla::operator==(const Semilla &other) const {
-    return this->x == other.x && this->y == other.y;
-}
-
-bool Semilla::operator!=(const Semilla &other) const {
-    return !(*this == other);
-}
 
 bool Semilla::operator<=(const Semilla &other) const {
     return !(other < *this);
@@ -23,6 +17,14 @@ bool Semilla::operator<=(const Semilla &other) const {
 
 bool Semilla::operator>=(const Semilla &other) const {
     return !(*this < other);
+}
+
+bool Semilla::operator==(const Semilla &other) const {
+    return this->x == other.x && this->y == other.y;
+}
+
+bool Semilla::operator!=(const Semilla &other) const {
+    return !(*this == other);
 }
 
 std::ostream &operator<<(std::ostream &os, const Semilla &rhs) {

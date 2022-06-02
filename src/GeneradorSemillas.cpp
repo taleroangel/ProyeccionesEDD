@@ -1,5 +1,6 @@
 #include "GeneradorSemillas.h"
 
+#include <cassert>
 #include <cstddef>
 #include <cstdlib>
 #include <limits>
@@ -7,6 +8,7 @@
 #include <utility>
 
 #include "Arista.hxx"
+#include "Grafo.hxx"
 #include "Imagen.h"
 #include "Semilla.h"
 
@@ -40,23 +42,36 @@ GeneradorSemillas::GeneradorSemillas(Imagen imagen) {
         for (size_t j = 0; j < matrix[i].size(); j++) {
             // Derecha
             if ((j + 1) < matrix[i].size())
-                aristas.push_back({Semilla{i, j, matrix[i][j]},
-                                   Semilla{i, (j + 1), matrix[i][j + 1]},
+                aristas.push_back({Semilla{j, i, matrix[i][j]},
+                                   Semilla{(j + 1), i, matrix[i][j + 1]},
                                    static_cast<double>(
                                        abs(matrix[i][j + 1] - matrix[i][j]))});
 
             // Abajo
             if ((i + 1) < matrix.size()) {
-                aristas.push_back({Semilla{i, j, matrix[i][j]},
-                                   Semilla{(i + 1), j, matrix[i + 1][j]},
+                aristas.push_back({Semilla{j, i, matrix[i][j]},
+                                   Semilla{j, (i + 1), matrix[i + 1][j]},
                                    static_cast<double>(
                                        abs(matrix[i + 1][j] - matrix[i][j]))});
             }
         }
     }
 
+    this->n_aristas = aristas.size();
+
+    // 2*(n-1)(m-1)+(n-1)+(m-1)
+    assert(n_aristas ==
+               (2 * (imagen.get_alto() - 1) * (imagen.get_ancho() - 1) +
+                (imagen.get_alto() - 1) + (imagen.get_ancho() - 1)) &&
+           "Cantidad de aristas no corresponde a la esperada "
+           "(2(n-1)(m-1)+(n-1)+(m-1))");
+
     // Crear el grafo
     this->grafo = new Grafo<Semilla>{aristas};
+
+    assert(grafo->get_vertices().size() ==
+               (imagen.get_alto() * imagen.get_ancho()) &&
+           "Tamaño del grafo no coincide con el esperado (n*m)");
 }
 
 std::vector<std::pair<Semilla, Grafo<Semilla>::dijkstra_path>>
@@ -86,7 +101,7 @@ std::vector<Semilla> GeneradorSemillas::generar_etiquetas(
         // Por cada columna
         for (size_t j = 0; j < matrix[i].size(); j++) {
             // Generar la semilla inicial
-            Semilla pixel{i, j, matrix[i][j], 0};
+            Semilla pixel{j, i, matrix[i][j], 0};
 
             double min_costo = std::numeric_limits<double>::infinity();
             int min_etiqueta = std::numeric_limits<double>::max();
@@ -126,7 +141,7 @@ Imagen::matriz_t GeneradorSemillas::generar_matrix(
             throw std::runtime_error(
                 "Semilla fuera de los límites de la imágen");
         // Añadir a la matriz (Etiqueta)
-        mtx[semilla.x][semilla.y] = semilla.etiqueta;
+        mtx[semilla.y][semilla.x] = semilla.etiqueta;
     }
 
     return mtx;

@@ -61,6 +61,7 @@ class Grafo {
     friend std::ostream &operator<<(std::ostream &os,
                                     const Grafo<K, Type> &rhs);
 
+    /* --------- Private member variables --------- */
    private:
     std::set<T> vertices;
     lista_adyacencia_t lista_adyacencia;
@@ -113,6 +114,8 @@ class Grafo {
      * @return double Peso de dikjstra
      */
     static double weight_of(dijkstra_path list, T value);
+
+    std::set<T> get_vertices() const;
 };
 
 template <typename T, bool Tipo>
@@ -124,8 +127,7 @@ Grafo<T, Tipo>::Grafo(std::vector<Arista<T>> conexiones) {
     // Por cada arista que el usuario define
     for (Arista<T> arista : conexiones) {
         // Insertar la arista en la lista de adyacencia
-        this->lista_adyacencia[arista.get_desde()].push_back(
-            arista);
+        this->lista_adyacencia[arista.get_desde()].push_back(arista);
         // Si es no dirigido insertar el inverso
         if (Tipo == GRAFO_NO_DIRIGIDO)
             this->lista_adyacencia[arista.get_hasta()].push_back(
@@ -157,7 +159,8 @@ typename Grafo<T, Tipo>::dijkstra_path Grafo<T, Tipo>::dijkstra_algorithm(
     }
 
     // Mientras que hayan nodos sin visitar
-    while (!unvisited.empty()) {
+    for (int counter = 0;
+         !unvisited.empty() && counter != this->vertices.size(); counter++) {
         // Obtener el nodo con el menor peso
         T *vertice = nullptr;
         double menor_peso = std::numeric_limits<double>::infinity();
@@ -223,6 +226,11 @@ inline void Grafo<T, Tipo>::quitar_vertice(T remover) {
 template <typename T, bool Tipo>
 inline bool Grafo<T, Tipo>::es_vacio() const {
     return this->vertices.empty();
+}
+
+template <typename T, bool Tipo>
+inline std::set<T> Grafo<T, Tipo>::get_vertices() const {
+    return this->vertices;
 }
 
 template <typename T, bool Tipo>

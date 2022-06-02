@@ -12,6 +12,7 @@ class GeneradorSemillas {
     /* --------- Atributos privados --------- */
    private:
     Grafo<Semilla, GRAFO_NO_DIRIGIDO> *grafo = nullptr;
+	int n_aristas;
 
    public:
     /* --------- Constructores por defecto y copias --------- */

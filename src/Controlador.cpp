@@ -1,7 +1,9 @@
 #include "Controlador.h"
 
+#include <cmath>
 #include <cstring>
 #include <exception>
+#include <iomanip>
 #include <iostream>
 #include <string>
 
@@ -253,6 +255,10 @@ void Controlador::segmentar(Comando::arguments_t args) {
     // Generar la semilla
     GeneradorSemillas generador(*imagen_cargada);
 
+    // Mostrar advertencia
+    std::cout << "(advertencia) Calculando las rutas con el algoritmo de "
+                 "Dijkstra, este proceso puede tardar bastante tiempo...\n";
+
     // Obtener los caminos de Dijkstra
     std::vector<std::pair<Semilla, Grafo<Semilla>::dijkstra_path>> caminos =
         generador.generar_caminos(semillas);
@@ -268,4 +274,9 @@ void Controlador::segmentar(Comando::arguments_t args) {
     // Generar la imágen
     Imagen imagen{mtx_imagen};
     imagen.guardar_archivo(archivo);
+
+    std::cout
+        << "(proceso satisfactorio) La imagen en memoria fue segmentada "
+           "correctamente y guardada en " +
+               args[0] + "\n";
 }
