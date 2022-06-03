@@ -15,7 +15,6 @@
 
 #include "Imagen.h"
 
-
 Volumen::Volumen(std::string nombre_base, int tam)
     : nombre_base(nombre_base), tam_volumen(tam) {
     if (tam > MAX_IMAGENES_VOLUMEN || tam < MIN_IMAGENES_VOLUMEN)
@@ -277,8 +276,15 @@ void Volumen::crear_proyeccion(std::string criterio, char direccion,
         throw std::invalid_argument("Criterio erróneo");
     }
 
-    // Grabar el resultado y girarlo adecuadamente
-    (direccion != 'x' ? (Imagen::reflejo_vertical(Imagen{resultado}))
-                      : Imagen{resultado})
-        .guardar_archivo(nombre_archivo);
+    // Girar el resultado en caso de ser necesario
+    Imagen guardar =
+        (direccion != 'x' ? (Imagen::reflejo_vertical(Imagen{resultado}))
+                          : Imagen{resultado});
+
+    //! HARDCODED EXCEPTION
+    // En caso de que sea mínimo colocar el máximo en 255
+    if (criterio.compare("minimo") == 0) guardar.set_max_tam(255);
+
+    // Guardar el resultado
+    guardar.guardar_archivo(nombre_archivo);
 }
