@@ -26,7 +26,7 @@ TARGETS = $(OUT)/Consola.o $(OUT)/Imagen.o $(OUT)/Volumen.o $(OUT)/Controlador.o
 $(OUT)/Consola.o: $(SRC)/Consola.cpp $(SRC)/Consola.h
 	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
-$(OUT)/Controlador.o: $(SRC)/Controlador.cpp $(SRC)/Controlador.h $(TARGETS)
+$(OUT)/Controlador.o: $(SRC)/Controlador.cpp $(SRC)/Controlador.h
 	$(CC) -c $(FLAGS) $< -o $@ -fPIE
 
 $(OUT)/Imagen.o: $(SRC)/Imagen.cpp $(SRC)/Imagen.h
